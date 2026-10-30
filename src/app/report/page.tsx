@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ID, Permission, Role } from "appwrite";
 import Header from "../Header";
-import { CATEGORIES, config, storage, tablesDB, type Category } from "@/lib/appwrite";
+import { CATEGORIES, compressPhoto, config, storage, tablesDB, type Category } from "@/lib/appwrite";
 import { useUser } from "@/lib/useUser";
 
 type Coords = { lat: number; lng: number; accuracy: number };
@@ -33,15 +33,16 @@ export default function ReportPage() {
     );
   }
 
-  function onPhoto(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    if (file.size > 5 * 1024 * 1024) return setError("Photo is over 5 MB. Try again with a smaller one.");
+  async function onPhoto(e: React.ChangeEvent<HTMLInputElement>) {
+    const raw = e.target.files?.[0];
+    if (!raw) return;
     setError("");
-    setPhoto(file);
-    setPreview(URL.createObjectURL(file));
     setCapturedAt(new Date().toISOString());
     locate(); // pin location at the moment of capture
+    const file = await compressPhoto(raw);
+    if (file.size > 5 * 1024 * 1024) return setError("Photo is over 5 MB. Try again.");
+    setPhoto(file);
+    setPreview(URL.createObjectURL(file));
   }
 
   useEffect(() => () => { if (preview) URL.revokeObjectURL(preview); }, [preview]);

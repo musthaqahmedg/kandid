@@ -40,6 +40,25 @@ export type Report = {
   captured_at: string;
 };
 
-export function photoUrl(fileId: string, width = 800) {
-  return storage.getFilePreview({ bucketId: config.photosBucketId, fileId, width, quality: 75 });
+// Photos are resized in the browser before upload, so we serve the stored file directly
+// (no server-side image transformations needed on the free plan).
+export function photoUrl(fileId: string) {
+  return storage.getFileView({ bucketId: config.photosBucketId, fileId });
+}
+
+/** Resize + re-encode a camera photo to a small JPEG (max 1600px, ~200-400 KB). */
+export async function compressPhoto(file: File, maxSize = 1600, quality = 0.8): Promise<File> {
+  const bitmap = await createImageBitmap(file, { imageOrientation: "from-image" }).catch(() => null);
+  if (!bitmap) return file; // browser can't decode (e.g. HEIC on some devices) - upload as-is
+  const scale = Math.min(1, maxSize / Math.max(bitmap.width, bitmap.height));
+  const w = Math.round(bitmap.width * scale);
+  const h = Math.round(bitmap.height * scale);
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
+  canvas.getContext("2d")!.drawImage(bitmap, 0, 0, w, h);
+  bitmap.close();
+  const blob: Blob | null = await new Promise((res) => canvas.toBlob(res, "image/jpeg", quality));
+  if (!blob) return file;
+  return new File([blob], "photo.jpg", { type: "image/jpeg" });
 }
