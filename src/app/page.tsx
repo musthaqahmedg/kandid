@@ -5,6 +5,8 @@ import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { Query } from "appwrite";
 import Header from "./Header";
+import UpvoteButton from "./UpvoteButton";
+import { useUser } from "@/lib/useUser";
 import { ageLabel, categoryLabel, config, photoUrl, tablesDB, timeAgo, type Report } from "@/lib/appwrite";
 
 // Leaflet needs the browser (window), so load the map on the client only
@@ -19,6 +21,8 @@ export default function Home() {
   const [reports, setReports] = useState<Report[] | null>(null);
   const [error, setError] = useState("");
   const [view, setView] = useState<View>("list");
+  const { user } = useUser();
+  const [myUpvotes, setMyUpvotes] = useState<Record<string, string> | null>(null);
 
   // Remember the last chosen view on this device
   useEffect(() => {
@@ -43,6 +47,20 @@ export default function Home() {
       .then((res) => setReports(res.rows as unknown as Report[]))
       .catch((e) => setError(e.message ?? "Could not load reports"));
   }, []);
+
+  // One query for all of this user's upvotes on the loaded reports
+  useEffect(() => {
+    if (!user || !reports) return setMyUpvotes(user ? null : {});
+    if (reports.length === 0) return setMyUpvotes({});
+    tablesDB
+      .listRows({
+        databaseId: config.databaseId,
+        tableId: config.upvotesTableId,
+        queries: [Query.equal("user_id", user.$id), Query.equal("report_id", reports.map((r) => r.$id)), Query.limit(100)],
+      })
+      .then((res) => setMyUpvotes(Object.fromEntries(res.rows.map((u) => [(u as unknown as { report_id: string }).report_id, u.$id]))))
+      .catch(() => setMyUpvotes({}));
+  }, [user, reports]);
 
   return (
     <>
@@ -84,8 +102,11 @@ export default function Home() {
                 <a href={`https://www.openstreetmap.org/?mlat=${lat}&mlon=${lng}#map=18/${lat}/${lng}`} target="_blank" rel="noreferrer">
                   📍 {lat.toFixed(4)}, {lng.toFixed(4)}
                 </a>
-                <span>{timeAgo(r.captured_at)} · 👍 {r.upvote_count}</span>
+                <span>{timeAgo(r.captured_at)}</span>
               </div>
+              {myUpvotes && (
+                <UpvoteButton reportId={r.$id} count={r.upvote_count} userId={user?.$id ?? null} reporterId={r.reporter_id} myUpvoteId={myUpvotes[r.$id] ?? null} />
+              )}
               <Link href={`/r/${r.$id}`} className="more">Details & “Is it fixed?” →</Link>
             </div>
           </article>

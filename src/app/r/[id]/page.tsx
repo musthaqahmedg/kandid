@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ID, Permission, Query, Role } from "appwrite";
 import Header from "../../Header";
+import UpvoteButton from "../../UpvoteButton";
 import {
   VERIFY_RADIUS_M,
   ageLabel,
@@ -58,6 +59,7 @@ export default function ReportDetail() {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [rating, setRating] = useState(0);
+  const [myUpvote, setMyUpvote] = useState<string | null | undefined>(undefined);
   const fileRef = useRef<HTMLInputElement>(null);
 
   const load = useCallback(async () => {
@@ -85,6 +87,14 @@ export default function ReportDetail() {
         if (v?.rating) setRating(v.rating);
       })
       .catch(() => {});
+  }, [id, user]);
+
+  useEffect(() => {
+    if (!user) return setMyUpvote(null);
+    tablesDB
+      .listRows({ databaseId: config.databaseId, tableId: config.upvotesTableId, queries: [Query.equal("report_id", id), Query.equal("user_id", user.$id), Query.limit(1)] })
+      .then((res) => setMyUpvote(res.rows[0]?.$id ?? null))
+      .catch(() => setMyUpvote(null));
   }, [id, user]);
 
   const isReporter = !!user && !!report && user.$id === report.reporter_id;
@@ -184,9 +194,12 @@ export default function ReportDetail() {
             <span>Reported {timeAgo(report.captured_at)}</span>
           </div>
           <div className="row meta" style={{ marginTop: 6 }}>
-            <span>👍 {report.upvote_count} · ✅ {fixedVotes} fixed · ❌ {brokenVotes} still broken</span>
+            <span>✅ {fixedVotes} fixed · ❌ {brokenVotes} still broken</span>
             {report.reporter_rating ? <span>Fix rated <Stars value={report.reporter_rating} /></span> : null}
           </div>
+          {myUpvote !== undefined && (
+            <UpvoteButton reportId={report.$id} count={report.upvote_count} userId={user?.$id ?? null} reporterId={report.reporter_id} myUpvoteId={myUpvote} />
+          )}
         </div>
       </article>
 
