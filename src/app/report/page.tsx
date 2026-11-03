@@ -74,7 +74,7 @@ export default function ReportPage() {
         file: photo,
         permissions: [Permission.read(Role.any()), Permission.delete(Role.user(user.$id))],
       });
-      await tablesDB.createRow({
+      const row = await tablesDB.createRow({
         databaseId: config.databaseId,
         tableId: config.reportsTableId,
         rowId: ID.unique(),
@@ -88,13 +88,10 @@ export default function ReportPage() {
           reporter_id: user.$id,
           captured_at: capturedAt,
         },
-        permissions: [
-          Permission.read(Role.any()),
-          Permission.update(Role.user(user.$id)),
-          Permission.delete(Role.user(user.$id)),
-        ],
+        // No update permission: status and counts are only changed by the kandid-sync function
+        permissions: [Permission.read(Role.any()), Permission.delete(Role.user(user.$id))],
       });
-      router.push("/");
+      router.push("/r/" + row.$id);
     } catch (err) {
       setError((err as Error).message);
     } finally {

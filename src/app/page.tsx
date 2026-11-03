@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { Query } from "appwrite";
 import Header from "./Header";
-import { categoryLabel, config, photoUrl, tablesDB, timeAgo, type Report } from "@/lib/appwrite";
+import { ageLabel, categoryLabel, config, photoUrl, tablesDB, timeAgo, type Report } from "@/lib/appwrite";
 
 // Leaflet needs the browser (window), so load the map on the client only
 const ReportsMap = dynamic(() => import("./ReportsMap"), {
@@ -69,13 +69,16 @@ export default function Home() {
         const label = categoryLabel(r.category);
         return (
           <article key={r.$id} className="card">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={photoUrl(r.photo_id)} alt={label} loading="lazy" />
+            <Link href={`/r/${r.$id}`} aria-label={`${label}: open details`}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={photoUrl(r.fixed_photo_id ?? r.photo_id)} alt={label} loading="lazy" />
+            </Link>
             <div className="body">
               <div className="row">
                 <strong>{label}</strong>
                 <span className={`pill ${r.status}`}>{r.status}</span>
               </div>
+              <p className={`age ${r.status}`}>{ageLabel(r)}</p>
               {r.note && <p style={{ margin: "6px 0" }}>{r.note}</p>}
               <div className="row meta">
                 <a href={`https://www.openstreetmap.org/?mlat=${lat}&mlon=${lng}#map=18/${lat}/${lng}`} target="_blank" rel="noreferrer">
@@ -83,6 +86,7 @@ export default function Home() {
                 </a>
                 <span>{timeAgo(r.captured_at)} · 👍 {r.upvote_count}</span>
               </div>
+              <Link href={`/r/${r.$id}`} className="more">Details & “Is it fixed?” →</Link>
             </div>
           </article>
         );

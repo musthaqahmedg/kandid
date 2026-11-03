@@ -6,6 +6,7 @@ export const config = {
   databaseId: process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID ?? "kandid",
   reportsTableId: process.env.NEXT_PUBLIC_APPWRITE_REPORTS_TABLE_ID ?? "reports",
   upvotesTableId: process.env.NEXT_PUBLIC_APPWRITE_UPVOTES_TABLE_ID ?? "upvotes",
+  verificationsTableId: process.env.NEXT_PUBLIC_APPWRITE_VERIFICATIONS_TABLE_ID ?? "verifications",
   photosBucketId: process.env.NEXT_PUBLIC_APPWRITE_PHOTOS_BUCKET_ID ?? "report-photos",
 };
 
@@ -40,7 +41,26 @@ export type Report = {
   captured_at: string;
   gps_accuracy?: number | null;
   pin_adjusted?: boolean;
+  fixed_at?: string | null;
+  fixed_photo_id?: string | null;
+  fixed_votes?: number;
+  broken_votes?: number;
+  reporter_rating?: number | null;
 };
+
+export type Verification = {
+  $id: string;
+  $createdAt: string;
+  report_id: string;
+  user_id: string;
+  verdict: "fixed" | "still_broken";
+  photo_id?: string | null;
+  location: [number, number];
+  rating?: number | null;
+};
+
+/** People must be this close to a report to confirm it is fixed or still broken. */
+export const VERIFY_RADIUS_M = 200;
 
 // Photos are resized in the browser before upload, so we serve the stored file directly
 // (no server-side image transformations needed on the free plan).
@@ -75,4 +95,31 @@ export function timeAgo(iso: string) {
   const m = Math.floor(s / 60); if (m < 60) return `${m} min ago`;
   const h = Math.floor(m / 60); if (h < 24) return `${h} h ago`;
   return `${Math.floor(h / 24)} d ago`;
+}
+
+/** Great-circle distance in metres between two [lng, lat] points. */
+export function distanceMetres([lng1, lat1]: [number, number], [lng2, lat2]: [number, number]) {
+  const R = 6371000;
+  const toRad = (d: number) => (d * Math.PI) / 180;
+  const dLat = toRad(lat2 - lat1);
+  const dLng = toRad(lng2 - lng1);
+  const a = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(a));
+}
+
+/** Whole days between two dates (at least 0). */
+export function daysBetween(fromIso: string, to: Date | string = new Date()) {
+  const end = typeof to === "string" ? new Date(to) : to;
+  return Math.max(0, Math.floor((end.getTime() - new Date(fromIso).getTime()) / 86400000));
+}
+
+/** "Open for 12 days" / "Fixed in 3 days" style label. */
+export function ageLabel(r: Report) {
+  const plural = (n: number) => `${n} day${n === 1 ? "" : "s"}`;
+  if (r.status === "fixed" && r.fixed_at) {
+    const d = daysBetween(r.captured_at, r.fixed_at);
+    return d === 0 ? "Fixed the same day" : `Fixed in ${plural(d)}`;
+  }
+  const d = daysBetween(r.captured_at);
+  return d === 0 ? "Reported today" : `Open for ${plural(d)}`;
 }

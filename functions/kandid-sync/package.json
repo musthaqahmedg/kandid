@@ -1,0 +1,10 @@
+{
+  "name": "kandid-sync",
+  "version": "1.0.0",
+  "description": "Keeps report counts and status in sync when people upvote or verify a fix",
+  "type": "module",
+  "main": "src/main.js",
+  "dependencies": {
+    "node-appwrite": "^31.1.0"
+  }
+}

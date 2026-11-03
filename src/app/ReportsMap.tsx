@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { categoryLabel, photoUrl, timeAgo, type Report } from "@/lib/appwrite";
+import { ageLabel, categoryLabel, photoUrl, timeAgo, type Report } from "@/lib/appwrite";
 
 // Kerala, shown when there are no reports yet
 const DEFAULT_CENTER: L.LatLngTuple = [10.5, 76.3];
@@ -53,8 +53,14 @@ function popupContent(r: Report) {
 
   const meta = document.createElement("div");
   meta.className = "meta";
-  meta.textContent = `${timeAgo(r.captured_at)} · 👍 ${r.upvote_count}`;
+  meta.textContent = `${ageLabel(r)} · ${timeAgo(r.captured_at)} · 👍 ${r.upvote_count}`;
   el.appendChild(meta);
+
+  const link = document.createElement("a");
+  link.href = `/r/${encodeURIComponent(r.$id)}`;
+  link.className = "more";
+  link.textContent = "Details & “Is it fixed?” →";
+  el.appendChild(link);
 
   return el;
 }

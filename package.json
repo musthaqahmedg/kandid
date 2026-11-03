@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "node --test functions/kandid-sync/src/rules.test.js"
   },
   "dependencies": {
     "appwrite": "^29.2.0",

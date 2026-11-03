@@ -71,3 +71,19 @@ textarea { min-height: 90px; resize: vertical; }
 
 /* Pin picker on the report form */
 .pin-map { height: 260px; border-radius: 12px; border: 1px solid var(--line); overflow: hidden; z-index: 0; }
+
+/* Report detail & verification */
+.back { display: inline-block; text-decoration: none; }
+.age { margin: 4px 0 2px; font-weight: 700; font-size: 0.9rem; color: var(--open); }
+.age.acknowledged { color: var(--ack); } .age.fixed { color: var(--fixed); }
+.more { display: inline-block; margin-top: 8px; font-weight: 600; color: var(--brand); text-decoration: none; }
+.before-after { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+.before-after figure, .card figure { margin: 0; position: relative; }
+.before-after figcaption { position: absolute; left: 8px; top: 8px; background: rgba(0,0,0,.6); color: #fff; font-size: 0.75rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; }
+.verify h2 { margin: 0 0 6px; font-size: 1.15rem; }
+.verify-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.stars { display: inline-flex; gap: 2px; vertical-align: middle; }
+.stars span, .stars button { font-size: 1.3rem; line-height: 1; color: var(--line); background: none; border: 0; padding: 2px; cursor: default; }
+.stars button { cursor: pointer; font-size: 1.7rem; }
+.stars .on { color: #f59e0b; }
+.ok { color: var(--fixed); margin-top: 10px; font-weight: 600; }
