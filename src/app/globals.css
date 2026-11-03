@@ -47,5 +47,24 @@ textarea { min-height: 90px; resize: vertical; }
 .error { color: var(--open); margin-top: 10px; }
 .hint { color: var(--muted); font-size: 0.9rem; margin-top: 6px; }
 .preview { margin-top: 10px; border-radius: 12px; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border: 1px solid var(--line); }
-.fab { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); box-shadow: 0 8px 24px rgba(0,0,0,.2); padding: 14px 26px; border-radius: 999px; }
+.fab { white-space: nowrap; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); box-shadow: 0 8px 24px rgba(0,0,0,.2); padding: 14px 26px; border-radius: 999px; }
 .empty { text-align: center; padding: 48px 16px; color: var(--muted); }
+
+/* View switch */
+.tabs { display: flex; gap: 4px; padding: 4px; margin: 14px 0; background: var(--card); border: 1px solid var(--line); border-radius: 12px; }
+.tabs button { flex: 1; border: 0; background: transparent; color: var(--muted); padding: 10px; font-size: 0.95rem; font-weight: 600; border-radius: 9px; cursor: pointer; }
+.tabs button.on { background: var(--brand); color: var(--brand-ink); }
+
+/* Map */
+.map-wrap { position: relative; }
+.map { height: 55vh; min-height: 340px; border-radius: 16px; border: 1px solid var(--line); overflow: hidden; z-index: 0; }
+.map-loading { display: flex; align-items: center; justify-content: center; color: var(--muted); background: var(--card); }
+.map-bar { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 10px; }
+.map-locate { flex-shrink: 0; background: var(--card); padding: 8px 12px; font-size: 0.9rem; }
+.map-legend { display: flex; gap: 4px 12px; flex-wrap: wrap; color: var(--muted); font-size: 0.85rem; }
+.map-legend i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 5px; vertical-align: middle; }
+.kandid-pin span { display: block; width: 26px; height: 26px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); border: 3px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,.35); }
+.kandid-popup img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 8px; display: block; margin-bottom: 8px; background: #eee; }
+.kandid-popup strong { margin-right: 6px; }
+.kandid-popup p { margin: 6px 0; }
+.leaflet-container { font-family: inherit; }

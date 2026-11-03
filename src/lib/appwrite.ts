@@ -62,3 +62,15 @@ export async function compressPhoto(file: File, maxSize = 1600, quality = 0.8): 
   if (!blob) return file;
   return new File([blob], "photo.jpg", { type: "image/jpeg" });
 }
+
+export function categoryLabel(c: string) {
+  return CATEGORIES.find((x) => x.value === c)?.label ?? c;
+}
+
+export function timeAgo(iso: string) {
+  const s = Math.floor((Date.now() - new Date(iso).getTime()) / 1000);
+  if (s < 60) return "just now";
+  const m = Math.floor(s / 60); if (m < 60) return `${m} min ago`;
+  const h = Math.floor(m / 60); if (h < 24) return `${h} h ago`;
+  return `${Math.floor(h / 24)} d ago`;
+}
