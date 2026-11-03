@@ -38,6 +38,8 @@ export type Report = {
   upvote_count: number;
   reporter_id: string;
   captured_at: string;
+  gps_accuracy?: number | null;
+  pin_adjusted?: boolean;
 };
 
 // Photos are resized in the browser before upload, so we serve the stored file directly

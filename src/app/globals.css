@@ -68,3 +68,6 @@ textarea { min-height: 90px; resize: vertical; }
 .kandid-popup strong { margin-right: 6px; }
 .kandid-popup p { margin: 6px 0; }
 .leaflet-container { font-family: inherit; }
+
+/* Pin picker on the report form */
+.pin-map { height: 260px; border-radius: 12px; border: 1px solid var(--line); overflow: hidden; z-index: 0; }

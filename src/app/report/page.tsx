@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { ID, Permission, Role } from "appwrite";
 import Header from "../Header";
@@ -9,6 +10,12 @@ import { CATEGORIES, compressPhoto, config, storage, tablesDB, type Category } f
 import { useUser } from "@/lib/useUser";
 
 type Coords = { lat: number; lng: number; accuracy: number };
+type Pin = { lat: number; lng: number };
+
+const PinPicker = dynamic(() => import("./PinPicker"), {
+  ssr: false,
+  loading: () => <div className="pin-map map-loading">Loading map…</div>,
+});
 
 export default function ReportPage() {
   const router = useRouter();
@@ -18,6 +25,9 @@ export default function ReportPage() {
   const [capturedAt, setCapturedAt] = useState<string | null>(null);
   const [coords, setCoords] = useState<Coords | null>(null);
   const [locError, setLocError] = useState("");
+  const [pin, setPin] = useState<Pin | null>(null);
+  const [pinMoved, setPinMoved] = useState(false);
+  const [pinWarning, setPinWarning] = useState("");
   const [category, setCategory] = useState<Category>("road");
   const [note, setNote] = useState("");
   const [busy, setBusy] = useState(false);
@@ -27,7 +37,13 @@ export default function ReportPage() {
     setLocError("");
     if (!("geolocation" in navigator)) return setLocError("This device can't share location.");
     navigator.geolocation.getCurrentPosition(
-      (p) => setCoords({ lat: p.coords.latitude, lng: p.coords.longitude, accuracy: p.coords.accuracy }),
+      (p) => {
+        const c = { lat: p.coords.latitude, lng: p.coords.longitude, accuracy: p.coords.accuracy };
+        setCoords(c);
+        setPin({ lat: c.lat, lng: c.lng });
+        setPinMoved(false);
+        setPinWarning("");
+      },
       () => setLocError("Location is needed. Allow location access and try again."),
       { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
     );
@@ -49,7 +65,7 @@ export default function ReportPage() {
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
-    if (!user || !photo || !coords || !capturedAt) return;
+    if (!user || !photo || !coords || !pin || !capturedAt) return;
     setBusy(true); setError("");
     try {
       const file = await storage.createFile({
@@ -66,7 +82,9 @@ export default function ReportPage() {
           photo_id: file.$id,
           category,
           note: note.trim() || null,
-          location: [coords.lng, coords.lat], // Appwrite points are [longitude, latitude]
+          location: [pin.lng, pin.lat], // Appwrite points are [longitude, latitude]
+          gps_accuracy: Math.round(coords.accuracy),
+          pin_adjusted: pinMoved,
           reporter_id: user.$id,
           captured_at: capturedAt,
         },
@@ -110,10 +128,32 @@ export default function ReportPage() {
         )}
 
         <div className="hint" style={{ marginTop: 10 }}>
-          {coords
-            ? `📍 Pinned: ${coords.lat.toFixed(5)}, ${coords.lng.toFixed(5)} (±${Math.round(coords.accuracy)} m)`
-            : photo && !locError ? "📍 Getting your location…" : null}
+          {!coords && photo && !locError ? "📍 Getting your location…" : null}
         </div>
+        {coords && pin && (
+          <>
+            <label>Is the pin on the exact spot?</label>
+            <PinPicker
+              gps={coords}
+              pin={pin}
+              onChange={(p, tooFar) => {
+                setPin(p);
+                if (tooFar) {
+                  setPinWarning("The pin can only move 200 m from where you are, so reports always come from people who were there.");
+                } else {
+                  setPinWarning("");
+                  setPinMoved(true);
+                }
+              }}
+            />
+            <p className="hint">
+              {pinMoved ? "📍 Pin moved to the exact spot. " : "📍 Pinned at your live location. "}
+              Drag the red pin or tap the map to adjust (within 200 m).
+              {coords.accuracy > 50 && ` GPS is rough right now (±${Math.round(coords.accuracy)} m), so check the pin.`}
+            </p>
+            {pinWarning && <p className="error">{pinWarning}</p>}
+          </>
+        )}
         {locError && (
           <p className="error">
             {locError} <button type="button" className="btn ghost" onClick={locate}>Retry</button>
@@ -128,7 +168,7 @@ export default function ReportPage() {
         <label htmlFor="note">3. Add a note (optional)</label>
         <textarea id="note" maxLength={500} value={note} onChange={(e) => setNote(e.target.value)} placeholder="e.g. Big pothole near the bus stop, been here 2 weeks" />
 
-        <button className="btn block" style={{ marginTop: 20 }} disabled={busy || !photo || !coords}>
+        <button className="btn block" style={{ marginTop: 20 }} disabled={busy || !photo || !coords || !pin}>
           {busy ? "Posting…" : "Post report"}
         </button>
         {error && <p className="error">{error}</p>}
