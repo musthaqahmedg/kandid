@@ -6,6 +6,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { ID, Permission, Query, Role } from "appwrite";
 import Header from "../../Header";
 import UpvoteButton from "../../UpvoteButton";
+import MakeItCount from "./MakeItCount";
 import {
   VERIFY_RADIUS_M,
   ageLabel,
@@ -202,6 +203,8 @@ export default function ReportDetail() {
           )}
         </div>
       </article>
+
+      {report.status !== "fixed" && <MakeItCount report={report} userId={user?.$id ?? null} />}
 
       <section className="card verify">
         <div className="body">

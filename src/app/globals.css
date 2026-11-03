@@ -90,3 +90,11 @@ textarea { min-height: 90px; resize: vertical; }
 .upvote { margin-top: 10px; width: 100%; padding: 10px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--card); color: var(--text); font-size: 0.95rem; font-weight: 600; cursor: pointer; }
 .upvote.on { border-color: var(--brand); color: var(--brand); background: color-mix(in srgb, var(--brand) 8%, var(--card)); }
 .upvote:disabled { opacity: 0.6; cursor: default; }
+.share-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.share-row .btn { padding: 10px 14px; font-size: 0.95rem; }
+.channels { list-style: none; padding: 0; margin: 12px 0 0; }
+.channels li { border-top: 1px solid var(--line); padding: 12px 0; }
+.channels .btn { padding: 8px 12px; font-size: 0.9rem; flex-shrink: 0; }
+.filed-form { display: flex; gap: 8px; margin-top: 6px; }
+.filed-form input { flex: 1; min-width: 0; }
+.linklike { background: none; border: 0; padding: 0; color: var(--brand); font-weight: 600; font-size: 0.9rem; cursor: pointer; }
