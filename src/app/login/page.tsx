@@ -8,7 +8,7 @@ import Header from "../Header";
 import { account } from "@/lib/appwrite";
 
 // Turn on once the Google provider is configured in Appwrite
-const GOOGLE_LOGIN_ENABLED = false;
+const GOOGLE_LOGIN_ENABLED = true;
 
 export default function LoginPage() {
   const router = useRouter();
