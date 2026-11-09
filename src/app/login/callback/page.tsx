@@ -1,0 +1,42 @@
+"use client";
+
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import Header from "../../Header";
+import { account } from "@/lib/appwrite";
+
+/**
+ * Google sends people back here with a one-time userId + secret.
+ * Exchanging them for a session here (instead of relying on cookies from the
+ * Appwrite domain) keeps login working on iPhone Safari.
+ */
+export default function OAuthCallback() {
+  const router = useRouter();
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const userId = params.get("userId");
+    const secret = params.get("secret");
+    if (!userId || !secret) return setError("Google login didn't finish. Please try again.");
+    account
+      .createSession({ userId, secret })
+      .then(() => router.replace("/"))
+      .catch((e) => setError((e as Error).message));
+  }, [router]);
+
+  return (
+    <>
+      <Header />
+      {error ? (
+        <>
+          <p className="error">{error}</p>
+          <Link href="/login" className="btn ghost">Back to login</Link>
+        </>
+      ) : (
+        <p className="meta">Logging you in…</p>
+      )}
+    </>
+  );
+}
