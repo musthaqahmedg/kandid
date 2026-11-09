@@ -1,7 +1,7 @@
-// Fill these in before the public launch.
+// Who runs Kandid and how to reach them. Update if MAG Infosystems is registered later.
 export const LEGAL = {
-  operator: "Kandid (an independent citizen project, Palakkad, Kerala)",
-  grievanceOfficer: "Musthaq (founder)",
-  grievanceEmail: "", // TODO: add a contact email before launch
+  operator: "MAG Infosystems, the business name of Musthaq (Palakkad, Kerala, India)",
+  grievanceOfficer: "Musthaq, MAG Infosystems",
+  grievanceEmail: "maginfosystems@gmail.com",
   updated: "9 November 2026",
 };
