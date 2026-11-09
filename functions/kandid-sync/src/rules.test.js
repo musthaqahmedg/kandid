@@ -56,3 +56,10 @@ test("upvotes count unique real users only", () => {
   const up = (u, claim = u) => ({ user_id: claim, $permissions: [`delete("user:${u}")`] });
   assert.equal(countUpvotes([up("a"), up("b"), up("a"), up("c", "z")]), 2);
 });
+
+import { HIDE_AT_FLAGS, countFlags } from "./rules.js";
+test("flags: distinct real users, reporter's own flag ignored", () => {
+  const f = (u, claim = u) => ({ user_id: claim, $permissions: [`read("user:${u}")`] });
+  assert.equal(countFlags([f("a"), f("a"), f("b"), f("rep"), f("c", "z")], R), 2);
+  assert.equal(HIDE_AT_FLAGS, 3);
+});

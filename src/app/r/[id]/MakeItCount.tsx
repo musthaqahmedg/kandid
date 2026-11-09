@@ -64,7 +64,7 @@ export default function MakeItCount({ report, userId }: { report: Report; userId
 
   useEffect(() => {
     tablesDB
-      .listRows({ databaseId: config.databaseId, tableId: "filings", queries: [Query.equal("report_id", report.$id), Query.orderDesc("$createdAt"), Query.limit(20)] })
+      .listRows({ databaseId: config.databaseId, tableId: config.filingsTableId, queries: [Query.equal("report_id", report.$id), Query.orderDesc("$createdAt"), Query.limit(20)] })
       .then((res) => setFilings(res.rows as unknown as Filing[]))
       .catch(() => {});
   }, [report.$id]);
@@ -90,7 +90,7 @@ export default function MakeItCount({ report, userId }: { report: Report; userId
     try {
       const row = await tablesDB.createRow({
         databaseId: config.databaseId,
-        tableId: "filings",
+        tableId: config.filingsTableId,
         rowId: ID.unique(),
         data: { report_id: report.$id, user_id: userId, channel, reference: ref.trim() || null },
         permissions: [Permission.read(Role.any()), Permission.delete(Role.user(userId))],

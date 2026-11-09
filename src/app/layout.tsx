@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import Footer from "./Footer";
 
 export const metadata: Metadata = {
   title: "Kandid — see it, report it",
@@ -18,7 +19,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
-        <main className="wrap">{children}</main>
+        <main className="wrap">
+          {children}
+          <Footer />
+        </main>
       </body>
     </html>
   );

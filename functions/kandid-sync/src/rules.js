@@ -69,3 +69,12 @@ export function countUpvotes(rows) {
   for (const r of rows) if (ownedBy(r, r.user_id)) users.add(r.user_id);
   return users.size;
 }
+
+export const HIDE_AT_FLAGS = 3; // distinct people flagging before a report is hidden for review
+
+/** Count flags from distinct real users, ignoring the reporter flagging their own report. */
+export function countFlags(rows, report) {
+  const users = new Set();
+  for (const r of rows) if (ownedBy(r, r.user_id) && r.user_id !== report.reporter_id) users.add(r.user_id);
+  return users.size;
+}

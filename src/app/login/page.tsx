@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { ID } from "appwrite";
 import Header from "../Header";
 import { account } from "@/lib/appwrite";
@@ -50,6 +51,7 @@ export default function LoginPage() {
           <label htmlFor="email">Email</label>
           <input id="email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" autoComplete="email" />
           <p className="hint">We&apos;ll email you a 6-digit code. No password needed.</p>
+          <p className="hint">By continuing you agree to the <Link href="/terms">Terms</Link> and <Link href="/privacy">Privacy policy</Link>. Your email is never shown publicly.</p>
           <button className="btn block" style={{ marginTop: 16 }} disabled={busy}>
             {busy ? "Sending…" : "Send code"}
           </button>

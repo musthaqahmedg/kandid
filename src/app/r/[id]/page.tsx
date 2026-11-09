@@ -7,6 +7,7 @@ import { ID, Permission, Query, Role } from "appwrite";
 import Header from "../../Header";
 import UpvoteButton from "../../UpvoteButton";
 import MakeItCount from "./MakeItCount";
+import Moderation from "./Moderation";
 import {
   VERIFY_RADIUS_M,
   ageLabel,
@@ -204,9 +205,13 @@ export default function ReportDetail() {
         </div>
       </article>
 
-      {report.status !== "fixed" && <MakeItCount report={report} userId={user?.$id ?? null} />}
+      {report.hidden && (
+        <p className="notice">🚩 This report was flagged by several people and is hidden from the public feed until it&apos;s reviewed.</p>
+      )}
 
-      <section className="card verify">
+      {!report.hidden && report.status !== "fixed" && <MakeItCount report={report} userId={user?.$id ?? null} />}
+
+      {!report.hidden && <section className="card verify">
         <div className="body">
           <h2>Is it fixed?</h2>
           <p className="hint" style={{ marginTop: 0 }}>
@@ -246,7 +251,9 @@ export default function ReportDetail() {
           {message && <p className="ok">{message}</p>}
           {error && <p className="error">{error}</p>}
         </div>
-      </section>
+      </section>}
+
+      <Moderation report={report} userId={user?.$id ?? null} />
     </>
   );
 }

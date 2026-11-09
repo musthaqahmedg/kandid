@@ -98,3 +98,13 @@ textarea { min-height: 90px; resize: vertical; }
 .filed-form { display: flex; gap: 8px; margin-top: 6px; }
 .filed-form input { flex: 1; min-width: 0; }
 .linklike { background: none; border: 0; padding: 0; color: var(--brand); font-weight: 600; font-size: 0.9rem; cursor: pointer; }
+.btn.danger { background: var(--open); color: #fff; }
+.linklike.muted { color: var(--muted); }
+.moderation { margin: 16px 2px 0; }
+.notice { background: color-mix(in srgb, var(--ack) 12%, var(--card)); border: 1px solid var(--ack); border-radius: 12px; padding: 10px 12px; margin: 12px 0; }
+.site-footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.85rem; text-align: center; }
+.site-footer a { color: var(--muted); }
+.site-footer p { margin: 6px 0 0; }
+.legal h2 { font-size: 1.1rem; margin: 22px 0 6px; }
+.legal ul { padding-left: 20px; }
+.legal li { margin: 4px 0; }

@@ -42,7 +42,7 @@ export default function Home() {
       .listRows({
         databaseId: config.databaseId,
         tableId: config.reportsTableId,
-        queries: [Query.orderDesc("$createdAt"), Query.limit(100)],
+        queries: [Query.equal("hidden", false), Query.orderDesc("$createdAt"), Query.limit(100)],
       })
       .then((res) => setReports(res.rows as unknown as Report[]))
       .catch((e) => setError(e.message ?? "Could not load reports"));

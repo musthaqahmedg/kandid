@@ -1,4 +1,4 @@
-import { Account, Client, Storage, TablesDB } from "appwrite";
+import { Account, Client, Functions, Storage, TablesDB } from "appwrite";
 
 export const config = {
   endpoint: process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT ?? "https://sgp.cloud.appwrite.io/v1",
@@ -7,6 +7,9 @@ export const config = {
   reportsTableId: process.env.NEXT_PUBLIC_APPWRITE_REPORTS_TABLE_ID ?? "reports",
   upvotesTableId: process.env.NEXT_PUBLIC_APPWRITE_UPVOTES_TABLE_ID ?? "upvotes",
   verificationsTableId: process.env.NEXT_PUBLIC_APPWRITE_VERIFICATIONS_TABLE_ID ?? "verifications",
+  filingsTableId: "filings",
+  flagsTableId: "flags",
+  syncFunctionId: "kandid-sync",
   photosBucketId: process.env.NEXT_PUBLIC_APPWRITE_PHOTOS_BUCKET_ID ?? "report-photos",
 };
 
@@ -14,6 +17,7 @@ export const client = new Client().setEndpoint(config.endpoint).setProject(confi
 export const account = new Account(client);
 export const tablesDB = new TablesDB(client);
 export const storage = new Storage(client);
+export const functions = new Functions(client);
 
 export const CATEGORIES = [
   { value: "road", label: "Road damage" },
@@ -46,6 +50,8 @@ export type Report = {
   fixed_votes?: number;
   broken_votes?: number;
   reporter_rating?: number | null;
+  flag_count?: number;
+  hidden?: boolean;
 };
 
 export type Verification = {
