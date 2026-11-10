@@ -111,3 +111,6 @@ textarea { min-height: 90px; resize: vertical; }
 .btn.google { gap: 10px; margin-top: 8px; }
 .or { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 0.85rem; margin: 18px 0 4px; }
 .or::before, .or::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.blur-canvas { display: block; width: 100%; height: auto; aspect-ratio: auto; cursor: crosshair; touch-action: manipulation; }
+.blur-actions { display: flex; gap: 8px; margin-top: 6px; }
+.blur-actions .btn { padding: 8px 12px; font-size: 0.9rem; }

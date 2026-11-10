@@ -24,6 +24,7 @@ export default function Privacy() {
       <h2>What is public</h2>
       <p>Reports are public: anyone can see the photo, location, time, category, note, status and counts. <strong>Your name and email are never shown.</strong> Flags are private.</p>
       <p>Please don&apos;t photograph people&apos;s faces, number plates or the inside of homes, and don&apos;t write personal details in notes.</p>
+      <p><strong>Automatic blurring:</strong> before a photo is uploaded, Kandid looks for faces <em>on your phone</em> and pixelates them, and you can tap to blur anything else (like a number plate). Only the blurred photo is uploaded; the original never leaves your phone. To do this, your browser downloads small AI models from Google and jsDelivr.</p>
 
       <h2>Why we use it</h2>
       <p>Only to run Kandid: show issues, count confirmations, close fixed issues, prevent abuse, and keep the service secure. We don&apos;t sell your data or use it for advertising.</p>

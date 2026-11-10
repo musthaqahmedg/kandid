@@ -10,6 +10,7 @@
 - Public **list and map** of reports, coloured by status (Open → Acknowledged → Fixed)
 - **"Open for X days" / "Fixed in X days"** on every report
 - **Community-verified fixes**: people within 200 m confirm "It's fixed" (with an after photo) or "Still broken". Closes when the reporter or 3 people confirm; reopens if more people say it's still broken. The reporter can rate the fix.
+- **On-device privacy blur**: faces (and heads of people further away) are detected in the browser with MediaPipe (BlazeFace + EfficientDet-Lite) and pixelated before upload; tap to blur anything else, like number plates. The original photo never leaves the phone.
 - Before/after photos
 - Installable on iPhone and Android as a web app (PWA)
 

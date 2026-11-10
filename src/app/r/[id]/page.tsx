@@ -23,6 +23,7 @@ import {
   type Verification,
 } from "@/lib/appwrite";
 import { useUser } from "@/lib/useUser";
+import { autoBlurFile } from "@/lib/privacy";
 
 type Verdict = Verification["verdict"];
 
@@ -118,7 +119,7 @@ export default function ReportDetail() {
         const file = await storage.createFile({
           bucketId: config.photosBucketId,
           fileId: ID.unique(),
-          file: await compressPhoto(photo),
+          file: await autoBlurFile(await compressPhoto(photo)),
           permissions: [Permission.read(Role.any()), Permission.delete(Role.user(user.$id))],
         });
         photo_id = file.$id;

@@ -10,6 +10,7 @@
     "test": "node --test functions/kandid-sync/src/rules.test.js"
   },
   "dependencies": {
+    "@mediapipe/tasks-vision": "^1.2.2",
     "appwrite": "^29.2.0",
     "leaflet": "^1.9.4",
     "next": "^16.4.3",
