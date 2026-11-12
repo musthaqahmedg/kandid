@@ -1,5 +1,5 @@
 {
-"source": "Election Commission of India, results.eci.gov.in (General Election to Kerala Legislative Assembly, May 2026; provisional)",
+"source": "Election Commission of India, results.eci.gov.in (General Election to Kerala Legislative Assembly, May 2026; provisional); 29 constituencies from Wikipedia's 16th Kerala Assembly list, each name checked against the official Kerala Legislative Assembly members list (niyamasabha.org)",
 "updated": "2026-11-12",
 "mla": {
 "1": {
@@ -38,6 +38,10 @@
 "name": "Adv. Sajeev Joseph",
 "party": "Indian National Congress"
 },
+"10": {
+"name": "K. V. Sumesh",
+"party": "Communist Party of India (Marxist)"
+},
 "11": {
 "name": "Adv. T. O. Mohanan",
 "party": "Indian National Congress"
@@ -57,6 +61,10 @@
 "15": {
 "name": "V K Sanoj",
 "party": "Communist Party of India (Marxist)"
+},
+"16": {
+"name": "Adv. Sunny Joseph",
+"party": "Indian National Congress"
 },
 "17": {
 "name": "Usha Vijayan",
@@ -78,8 +86,20 @@
 "name": "Parakkal Abdulla",
 "party": "Indian Union Muslim League"
 },
+"22": {
+"name": "K. M. Abhijith",
+"party": "Indian National Congress"
+},
 "23": {
 "name": "Adv. K. Praveen Kumar",
+"party": "Indian National Congress"
+},
+"24": {
+"name": "Fathima Thahiliya",
+"party": "Indian Union Muslim League"
+},
+"25": {
+"name": "V. T. Sooraj",
 "party": "Indian National Congress"
 },
 "26": {
@@ -93,6 +113,10 @@
 "28": {
 "name": "Adv. Fyzal Babu",
 "party": "Indian Union Muslim League"
+},
+"29": {
+"name": "P. A. Mohamed Riyas",
+"party": "Communist Party of India (Marxist)"
 },
 "30": {
 "name": "M. A. Razak Master",
@@ -113,6 +137,10 @@
 "34": {
 "name": "P. K. Basheer",
 "party": "Indian Union Muslim League"
+},
+"35": {
+"name": "Aryadan Shoukath",
+"party": "Indian National Congress"
 },
 "36": {
 "name": "A. P. Anilkumar",
@@ -178,6 +206,10 @@
 "name": "P. Mammikutty",
 "party": "Communist Party of India (Marxist)"
 },
+"52": {
+"name": "K. Premkumar",
+"party": "Communist Party of India (Marxist)"
+},
 "53": {
 "name": "Thulasi Teacher",
 "party": "Indian National Congress"
@@ -190,6 +222,10 @@
 "name": "A Prabhakaran",
 "party": "Communist Party of India (Marxist)"
 },
+"56": {
+"name": "Ramesh Pisharody",
+"party": "Indian National Congress"
+},
 "57": {
 "name": "Sumod",
 "party": "Communist Party of India (Marxist)"
@@ -197,6 +233,18 @@
 "58": {
 "name": "Adv. Sumesh Achuthan",
 "party": "Indian National Congress"
+},
+"59": {
+"name": "K. Preman",
+"party": "Communist Party of India (Marxist)"
+},
+"60": {
+"name": "T. M. Sasi",
+"party": "Communist Party of India (Marxist)"
+},
+"61": {
+"name": "U. R. Pradeep",
+"party": "Communist Party of India (Marxist)"
 },
 "62": {
 "name": "A C Moideen",
@@ -238,6 +286,10 @@
 "name": "K K Ramachandran",
 "party": "Communist Party of India (Marxist)"
 },
+"72": {
+"name": "Saneeshkumar Joseph",
+"party": "Indian National Congress"
+},
 "73": {
 "name": "Adv. O J Janeesh",
 "party": "Indian National Congress"
@@ -246,9 +298,21 @@
 "name": "Manoj Moothedan",
 "party": "Indian National Congress"
 },
+"75": {
+"name": "Roji M. John",
+"party": "Indian National Congress"
+},
+"76": {
+"name": "Anwar Sadath",
+"party": "Indian National Congress"
+},
 "77": {
 "name": "Adv. V E Abdul Gafoor",
 "party": "Indian Union Muslim League"
+},
+"78": {
+"name": "V. D. Satheesan",
+"party": "Indian National Congress"
 },
 "79": {
 "name": "Tony Chammany",
@@ -278,6 +342,10 @@
 "name": "Anoop Jacob",
 "party": "Kerala Congress (Jacob)"
 },
+"86": {
+"name": "Dr. Mathew Kuzhalnadan",
+"party": "Indian National Congress"
+},
 "87": {
 "name": "Shibu Theckumpuram",
 "party": "Kerala Congress"
@@ -296,6 +364,10 @@
 },
 "91": {
 "name": "Roy K Paulose",
+"party": "Indian National Congress"
+},
+"92": {
+"name": "Cyriac Thomas",
 "party": "Indian National Congress"
 },
 "93": {
@@ -334,9 +406,17 @@
 "name": "Adv. Sebastian M. J",
 "party": "Indian National Congress"
 },
+"102": {
+"name": "Shanimol Osman",
+"party": "Indian National Congress"
+},
 "103": {
 "name": "P. Prasad",
 "party": "Communist Party of India"
+},
+"104": {
+"name": "A. D. Thomas",
+"party": "Indian National Congress"
 },
 "105": {
 "name": "G. Sudhakaran",
@@ -358,6 +438,10 @@
 "name": "M. S. Arun Kumar",
 "party": "Communist Party of India (Marxist)"
 },
+"110": {
+"name": "Saji Cherian",
+"party": "Communist Party of India (Marxist)"
+},
 "111": {
 "name": "Adv. Varghese Mammen",
 "party": "Kerala Congress"
@@ -366,9 +450,17 @@
 "name": "Adv. Pazhakulam Madhu",
 "party": "Indian National Congress"
 },
+"113": {
+"name": "Abin Varkey Kodiyattu",
+"party": "Indian National Congress"
+},
 "114": {
 "name": "Adv. K U Jenish Kumar",
 "party": "Communist Party of India (Marxist)"
+},
+"115": {
+"name": "Adv. C. V. Santhakumar",
+"party": "Indian National Congress"
 },
 "116": {
 "name": "C. R. Mahesh",
@@ -386,9 +478,17 @@
 "name": "K. N. Balagopal",
 "party": "Communist Party of India (Marxist)"
 },
+"120": {
+"name": "Jyothi Kumar Chamakkala",
+"party": "Indian National Congress"
+},
 "121": {
 "name": "C. Ajayaprasad",
 "party": "Communist Party of India"
+},
+"122": {
+"name": "M. M. Naseer",
+"party": "Indian National Congress"
 },
 "123": {
 "name": "P. C. Vishnunadh",
@@ -408,6 +508,10 @@
 },
 "127": {
 "name": "Adv. V Joy",
+"party": "Communist Party of India (Marxist)"
+},
+"128": {
+"name": "O. S. Ambika",
 "party": "Communist Party of India (Marxist)"
 },
 "129": {
@@ -438,6 +542,14 @@
 "name": "Rajeev Chandrasekhar",
 "party": "Bharatiya Janata Party"
 },
+"136": {
+"name": "G. Steephen",
+"party": "Communist Party of India (Marxist)"
+},
+"137": {
+"name": "C. K. Hareendran",
+"party": "Communist Party of India (Marxist)"
+},
 "138": {
 "name": "M. R. Baiju",
 "party": "Indian National Congress"
@@ -445,6 +557,10 @@
 "139": {
 "name": "Adv. M. Vincent",
 "party": "Indian National Congress"
+},
+"140": {
+"name": "N. Shakthan",
+"party": ""
 }
 }
 }

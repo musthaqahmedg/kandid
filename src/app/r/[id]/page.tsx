@@ -209,7 +209,7 @@ export default function ReportDetail() {
             <div className="who">
               <div>🏛 {t("ac.label", { ac: report.constituency, no: report.ac_no ?? "" })}</div>
               {report.ac_no && MLAS[String(report.ac_no)] && (
-                <div><strong>{t("ac.mla", { name: MLAS[String(report.ac_no)].name })}</strong> <span className="meta">({MLAS[String(report.ac_no)].party})</span></div>
+                <div><strong>{t("ac.mla", { name: MLAS[String(report.ac_no)].name })}</strong> {MLAS[String(report.ac_no)].party && <span className="meta">({MLAS[String(report.ac_no)].party})</span>}</div>
               )}
               {report.lok_sabha && <div className="meta">{t("ac.lokSabha", { pc: report.lok_sabha })}</div>}
               {!(report.ac_no && MLAS[String(report.ac_no)]) && (
