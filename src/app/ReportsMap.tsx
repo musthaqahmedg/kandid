@@ -46,6 +46,13 @@ function popupContent(r: Report, t: T) {
   status.textContent = statusText(t, r.status);
   el.appendChild(status);
 
+  if (r.address) {
+    const place = document.createElement("div");
+    place.className = "meta";
+    place.textContent = `📍 ${r.address}`;
+    el.appendChild(place);
+  }
+
   if (r.note) {
     const note = document.createElement("p");
     note.textContent = r.note;

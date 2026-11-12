@@ -56,6 +56,7 @@ export default function MakeItCount({ report, userId }: { report: Report; userId
   const shareText = t("share.text", { label: categoryText(t, report.category), age: ageText(t, report), n: report.upvote_count });
   const complaintText = [
     `Complaint: ${label}`,
+    report.address ? `Place: ${report.address}` : null,
     `Location: ${lat.toFixed(6)}, ${lng.toFixed(6)} (map: ${mapUrl})`,
     `Photo taken on the spot on ${date}.`,
     report.note ? `Details: ${report.note}` : null,

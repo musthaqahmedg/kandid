@@ -102,7 +102,7 @@ export default function Home() {
               {r.note && <p style={{ margin: "6px 0" }}>{r.note}</p>}
               <div className="row meta">
                 <a href={`https://www.openstreetmap.org/?mlat=${lat}&mlon=${lng}#map=18/${lat}/${lng}`} target="_blank" rel="noreferrer">
-                  📍 {lat.toFixed(4)}, {lng.toFixed(4)}
+                  📍 {r.address ?? `${lat.toFixed(4)}, ${lng.toFixed(4)}`}
                 </a>
                 <span>{agoText(t, r.captured_at)}</span>
               </div>

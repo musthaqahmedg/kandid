@@ -10,6 +10,7 @@ import { CATEGORIES, compressPhoto, config, storage, tablesDB, type Category } f
 import { canvasToFile, detectPrivateAreas, preloadPrivacyModels, renderBlurred, type Region } from "@/lib/privacy";
 import { useUser } from "@/lib/useUser";
 import { categoryText, useI18n } from "@/lib/i18n";
+import { placeName } from "@/lib/geocode";
 
 type Coords = { lat: number; lng: number; accuracy: number };
 type Pin = { lat: number; lng: number };
@@ -36,6 +37,7 @@ export default function ReportPage() {
   const [pin, setPin] = useState<Pin | null>(null);
   const [pinMoved, setPinMoved] = useState(false);
   const [pinWarning, setPinWarning] = useState("");
+  const [address, setAddress] = useState<string | null>(null);
   const [category, setCategory] = useState<Category>("road");
   const [note, setNote] = useState("");
   const [busy, setBusy] = useState(false);
@@ -56,6 +58,14 @@ export default function ReportPage() {
       { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
     );
   }
+
+  // Look up the place name for the pin (debounced so dragging doesn't spam the service)
+  useEffect(() => {
+    if (!pin) return;
+    setAddress(null);
+    const id = setTimeout(() => { placeName(pin.lat, pin.lng).then(setAddress); }, 1200);
+    return () => clearTimeout(id);
+  }, [pin]);
 
   // Start downloading the privacy models as soon as the page opens
   useEffect(() => { preloadPrivacyModels(); }, []);
@@ -113,6 +123,7 @@ export default function ReportPage() {
           note: note.trim() || null,
           location: [pin.lng, pin.lat], // Appwrite points are [longitude, latitude]
           gps_accuracy: Math.round(coords.accuracy),
+          address,
           pin_adjusted: pinMoved,
           reporter_id: user.$id,
           captured_at: capturedAt,
@@ -189,6 +200,7 @@ export default function ReportPage() {
               {pinMoved ? t("report.pinMoved") : t("report.pinLive")} {t("report.pinHint")}
               {coords.accuracy > 50 && " " + t("report.gpsRough", { n: Math.round(coords.accuracy) })}
             </p>
+            {address && <p className="hint place">📍 {address}</p>}
             {pinWarning && <p className="error">{pinWarning}</p>}
           </>
         )}

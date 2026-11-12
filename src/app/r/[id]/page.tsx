@@ -194,7 +194,7 @@ export default function ReportDetail() {
           {report.note && <p style={{ margin: "6px 0" }}>{report.note}</p>}
           <div className="row meta">
             <a href={`https://www.openstreetmap.org/?mlat=${lat}&mlon=${lng}#map=18/${lat}/${lng}`} target="_blank" rel="noreferrer">
-              📍 {lat.toFixed(5)}, {lng.toFixed(5)}
+              📍 {report.address ?? `${lat.toFixed(5)}, ${lng.toFixed(5)}`}
             </a>
             <span>{t("detail.reported", { when: agoText(t, report.captured_at) })}</span>
           </div>

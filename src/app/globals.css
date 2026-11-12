@@ -116,3 +116,4 @@ textarea { min-height: 90px; resize: vertical; }
 .blur-actions .btn { padding: 8px 12px; font-size: 0.9rem; }
 .top-actions { display: flex; align-items: center; gap: 8px; }
 .lang { width: auto; padding: 8px 10px; font-size: 0.9rem; border-radius: 10px; }
+.place { color: var(--text); font-weight: 600; }

@@ -33,7 +33,7 @@ export default function Privacy() {
       <ul>
         <li>Accounts, reports and photos: Appwrite Cloud (Singapore region).</li>
         <li>Website hosting: Vercel.</li>
-        <li>Maps: OpenStreetMap. Your browser loads map images from OpenStreetMap&apos;s servers.</li>
+        <li>Maps: OpenStreetMap. Your browser loads map images from OpenStreetMap&apos;s servers, and sends the report&apos;s location to OpenStreetMap&apos;s Nominatim service to look up the place name.</li>
       </ul>
       <p>Your browser also keeps your login session and your list/map choice on your device.</p>
 
