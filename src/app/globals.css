@@ -114,3 +114,5 @@ textarea { min-height: 90px; resize: vertical; }
 .blur-canvas { display: block; width: 100%; height: auto; aspect-ratio: auto; cursor: crosshair; touch-action: manipulation; }
 .blur-actions { display: flex; gap: 8px; margin-top: 6px; }
 .blur-actions .btn { padding: 8px 12px; font-size: 0.9rem; }
+.top-actions { display: flex; align-items: center; gap: 8px; }
+.lang { width: auto; padding: 8px 10px; font-size: 0.9rem; border-radius: 10px; }

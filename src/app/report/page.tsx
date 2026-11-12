@@ -9,6 +9,7 @@ import Header from "../Header";
 import { CATEGORIES, compressPhoto, config, storage, tablesDB, type Category } from "@/lib/appwrite";
 import { canvasToFile, detectPrivateAreas, preloadPrivacyModels, renderBlurred, type Region } from "@/lib/privacy";
 import { useUser } from "@/lib/useUser";
+import { categoryText, useI18n } from "@/lib/i18n";
 
 type Coords = { lat: number; lng: number; accuracy: number };
 type Pin = { lat: number; lng: number };
@@ -23,6 +24,7 @@ const PinPicker = dynamic(() => import("./PinPicker"), {
 export default function ReportPage() {
   const router = useRouter();
   const { user, loading } = useUser();
+  const { t } = useI18n();
   const [photo, setPhoto] = useState<File | null>(null);
   const [bitmap, setBitmap] = useState<ImageBitmap | null>(null);
   const [autoRegions, setAutoRegions] = useState<Region[]>([]);
@@ -41,7 +43,7 @@ export default function ReportPage() {
 
   function locate() {
     setLocError("");
-    if (!("geolocation" in navigator)) return setLocError("This device can't share location.");
+    if (!("geolocation" in navigator)) return setLocError(t("report.noGeo"));
     navigator.geolocation.getCurrentPosition(
       (p) => {
         const c = { lat: p.coords.latitude, lng: p.coords.longitude, accuracy: p.coords.accuracy };
@@ -50,7 +52,7 @@ export default function ReportPage() {
         setPinMoved(false);
         setPinWarning("");
       },
-      () => setLocError("Location is needed. Allow location access and try again."),
+      () => setLocError(t("report.needLocation")),
       { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
     );
   }
@@ -65,9 +67,9 @@ export default function ReportPage() {
     setCapturedAt(new Date().toISOString());
     locate(); // pin location at the moment of capture
     const file = await compressPhoto(raw);
-    if (file.size > 5 * 1024 * 1024) return setError("Photo is over 5 MB. Try again.");
+    if (file.size > 5 * 1024 * 1024) return setError(t("report.tooBig"));
     const bmp = await createImageBitmap(file).catch(() => null);
-    if (!bmp) return setError("Couldn't read that photo. Try again.");
+    if (!bmp) return setError(t("report.unreadable"));
     bitmap?.close();
     setPhoto(file);
     setBitmap(bmp);
@@ -126,59 +128,57 @@ export default function ReportPage() {
     }
   }
 
-  if (loading) return (<><Header /><p className="meta">Loading…</p></>);
+  if (loading) return (<><Header /><p className="meta">{t("common.loading")}</p></>);
 
   if (!user)
     return (
       <>
         <Header />
-        <h1>Report an issue</h1>
-        <p>Please log in first so your report counts.</p>
-        <Link href="/login" className="btn">Log in</Link>
+        <h1>{t("report.title")}</h1>
+        <p>{t("report.loginFirst")}</p>
+        <Link href="/login" className="btn">{t("nav.login")}</Link>
       </>
     );
 
   return (
     <>
       <Header />
-      <h1>Report an issue</h1>
+      <h1>{t("report.title")}</h1>
       <form onSubmit={submit}>
-        <label htmlFor="photo">1. Take a photo</label>
+        <label htmlFor="photo">{t("report.step1")}</label>
         <input id="photo" type="file" accept="image/*" capture="environment" onChange={onPhoto} />
-        <p className="hint">Opens your camera. Location and time are added automatically.</p>
+        <p className="hint">{t("report.step1Hint")}</p>
         {bitmap && (
           <>
             <BlurEditor source={bitmap} regions={[...autoRegions, ...manualRegions]} onAdd={(r) => setManualRegions((m) => [...m, r])} />
             <p className="hint">
-              {scan === "scanning" && "🔒 Checking for faces…"}
-              {scan === "done" && (autoRegions.length > 0
-                ? `🔒 ${autoRegions.length} face${autoRegions.length > 1 ? "s" : ""} blurred automatically. `
-                : "🔒 No faces found. ")}
-              {scan === "failed" && "🔒 Auto-blur isn't available right now. "}
-              {scan !== "scanning" && "Tap the photo to blur anything else, like a number plate."}
+              {scan === "scanning" && t("report.blurScanning")}
+              {scan === "done" && (autoRegions.length > 0 ? t("report.blurFound", { n: autoRegions.length }) : t("report.blurNone"))}
+              {scan === "failed" && t("report.blurFailed")}
+              {scan !== "scanning" && " " + t("report.blurTap")}
             </p>
             {manualRegions.length > 0 && (
               <div className="blur-actions">
-                <button type="button" className="btn ghost" onClick={() => setManualRegions((m) => m.slice(0, -1))}>↶ Undo</button>
-                <button type="button" className="btn ghost" onClick={() => setManualRegions([])}>Clear my blurs</button>
+                <button type="button" className="btn ghost" onClick={() => setManualRegions((m) => m.slice(0, -1))}>{t("report.undo")}</button>
+                <button type="button" className="btn ghost" onClick={() => setManualRegions([])}>{t("report.clearBlurs")}</button>
               </div>
             )}
           </>
         )}
 
         <div className="hint" style={{ marginTop: 10 }}>
-          {!coords && photo && !locError ? "📍 Getting your location…" : null}
+          {!coords && photo && !locError ? t("report.gettingLocation") : null}
         </div>
         {coords && pin && (
           <>
-            <label>Is the pin on the exact spot?</label>
+            <label>{t("report.pinQuestion")}</label>
             <PinPicker
               gps={coords}
               pin={pin}
               onChange={(p, tooFar) => {
                 setPin(p);
                 if (tooFar) {
-                  setPinWarning("The pin can only move 200 m from where you are, so reports always come from people who were there.");
+                  setPinWarning(t("report.pinTooFar"));
                 } else {
                   setPinWarning("");
                   setPinMoved(true);
@@ -186,29 +186,28 @@ export default function ReportPage() {
               }}
             />
             <p className="hint">
-              {pinMoved ? "📍 Pin moved to the exact spot. " : "📍 Pinned at your live location. "}
-              Drag the red pin or tap the map to adjust (within 200 m).
-              {coords.accuracy > 50 && ` GPS is rough right now (±${Math.round(coords.accuracy)} m), so check the pin.`}
+              {pinMoved ? t("report.pinMoved") : t("report.pinLive")} {t("report.pinHint")}
+              {coords.accuracy > 50 && " " + t("report.gpsRough", { n: Math.round(coords.accuracy) })}
             </p>
             {pinWarning && <p className="error">{pinWarning}</p>}
           </>
         )}
         {locError && (
           <p className="error">
-            {locError} <button type="button" className="btn ghost" onClick={locate}>Retry</button>
+            {locError} <button type="button" className="btn ghost" onClick={locate}>{t("report.retry")}</button>
           </p>
         )}
 
-        <label htmlFor="category">2. What&apos;s the problem?</label>
+        <label htmlFor="category">{t("report.step2")}</label>
         <select id="category" value={category} onChange={(e) => setCategory(e.target.value as Category)}>
-          {CATEGORIES.map((c) => <option key={c.value} value={c.value}>{c.label}</option>)}
+          {CATEGORIES.map((c) => <option key={c.value} value={c.value}>{categoryText(t, c.value)}</option>)}
         </select>
 
-        <label htmlFor="note">3. Add a note (optional)</label>
-        <textarea id="note" maxLength={500} value={note} onChange={(e) => setNote(e.target.value)} placeholder="e.g. Big pothole near the bus stop, been here 2 weeks" />
+        <label htmlFor="note">{t("report.step3")}</label>
+        <textarea id="note" maxLength={500} value={note} onChange={(e) => setNote(e.target.value)} placeholder={t("report.notePlaceholder")} />
 
         <button className="btn block" style={{ marginTop: 20 }} disabled={busy || !photo || !coords || !pin || scan === "scanning"}>
-          {busy ? "Posting…" : "Post report"}
+          {busy ? t("report.posting") : t("report.post")}
         </button>
         {error && <p className="error">{error}</p>}
       </form>

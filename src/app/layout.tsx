@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import Footer from "./Footer";
+import { I18nProvider } from "@/lib/i18n";
 
 export const metadata: Metadata = {
   title: "Kandid — see it, report it",
@@ -19,10 +20,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
+        <I18nProvider>
         <main className="wrap">
           {children}
           <Footer />
         </main>
+        </I18nProvider>
       </body>
     </html>
   );

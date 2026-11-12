@@ -7,6 +7,7 @@ import { Query } from "appwrite";
 import Header from "./Header";
 import UpvoteButton from "./UpvoteButton";
 import { useUser } from "@/lib/useUser";
+import { ageText, agoText, categoryText, statusText, useI18n } from "@/lib/i18n";
 import { ageLabel, categoryLabel, config, photoUrl, tablesDB, timeAgo, type Report } from "@/lib/appwrite";
 
 // Leaflet needs the browser (window), so load the map on the client only
@@ -22,6 +23,7 @@ export default function Home() {
   const [error, setError] = useState("");
   const [view, setView] = useState<View>("list");
   const { user } = useUser();
+  const { t } = useI18n();
   const [myUpvotes, setMyUpvotes] = useState<Record<string, string> | null>(null);
 
   // Remember the last chosen view on this device
@@ -45,7 +47,7 @@ export default function Home() {
         queries: [Query.equal("hidden", false), Query.orderDesc("$createdAt"), Query.limit(100)],
       })
       .then((res) => setReports(res.rows as unknown as Report[]))
-      .catch((e) => setError(e.message ?? "Could not load reports"));
+      .catch((e) => setError(e.message ?? t("home.loadError")));
   }, []);
 
   // One query for all of this user's upvotes on the loaded reports
@@ -65,26 +67,26 @@ export default function Home() {
   return (
     <>
       <Header />
-      <h1 style={{ margin: "0 0 4px" }}>Issues near you</h1>
-      <p className="meta" style={{ marginTop: 0 }}>Seen something broken? Snap it, pin it, make it count.</p>
+      <h1 style={{ margin: "0 0 4px" }}>{t("home.title")}</h1>
+      <p className="meta" style={{ marginTop: 0 }}>{t("home.tagline")}</p>
 
       <div className="tabs" role="tablist" aria-label="View">
-        <button role="tab" aria-selected={view === "list"} className={view === "list" ? "on" : ""} onClick={() => choose("list")}>☰ List</button>
-        <button role="tab" aria-selected={view === "map"} className={view === "map" ? "on" : ""} onClick={() => choose("map")}>🗺 Map</button>
+        <button role="tab" aria-selected={view === "list"} className={view === "list" ? "on" : ""} onClick={() => choose("list")}>{t("home.list")}</button>
+        <button role="tab" aria-selected={view === "map"} className={view === "map" ? "on" : ""} onClick={() => choose("map")}>{t("home.map")}</button>
       </div>
 
       {error && <p className="error">{error}</p>}
       {!reports && !error && <p className="meta">Loading…</p>}
 
-      {reports && view === "map" && <ReportsMap reports={reports} />}
+      {reports && view === "map" && <ReportsMap reports={reports} t={t} />}
 
       {reports && view === "list" && reports.length === 0 && (
-        <div className="empty">No reports yet. Be the first to report an issue.</div>
+        <div className="empty">{t("home.empty")}</div>
       )}
 
       {reports && view === "list" && reports.map((r) => {
         const [lng, lat] = r.location;
-        const label = categoryLabel(r.category);
+        const label = categoryText(t, r.category);
         return (
           <article key={r.$id} className="card">
             <Link href={`/r/${r.$id}`} aria-label={`${label}: open details`}>
@@ -94,26 +96,26 @@ export default function Home() {
             <div className="body">
               <div className="row">
                 <strong>{label}</strong>
-                <span className={`pill ${r.status}`}>{r.status}</span>
+                <span className={`pill ${r.status}`}>{statusText(t, r.status)}</span>
               </div>
-              <p className={`age ${r.status}`}>{ageLabel(r)}</p>
+              <p className={`age ${r.status}`}>{ageText(t, r)}</p>
               {r.note && <p style={{ margin: "6px 0" }}>{r.note}</p>}
               <div className="row meta">
                 <a href={`https://www.openstreetmap.org/?mlat=${lat}&mlon=${lng}#map=18/${lat}/${lng}`} target="_blank" rel="noreferrer">
                   📍 {lat.toFixed(4)}, {lng.toFixed(4)}
                 </a>
-                <span>{timeAgo(r.captured_at)}</span>
+                <span>{agoText(t, r.captured_at)}</span>
               </div>
               {myUpvotes && (
                 <UpvoteButton reportId={r.$id} count={r.upvote_count} userId={user?.$id ?? null} reporterId={r.reporter_id} myUpvoteId={myUpvotes[r.$id] ?? null} />
               )}
-              <Link href={`/r/${r.$id}`} className="more">Details & “Is it fixed?” →</Link>
+              <Link href={`/r/${r.$id}`} className="more">{t("home.details")}</Link>
             </div>
           </article>
         );
       })}
 
-      <Link href="/report" className="btn fab">📷 Report an issue</Link>
+      <Link href="/report" className="btn fab">{t("home.report")}</Link>
     </>
   );
 }

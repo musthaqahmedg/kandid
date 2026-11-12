@@ -24,6 +24,7 @@ import {
 } from "@/lib/appwrite";
 import { useUser } from "@/lib/useUser";
 import { autoBlurFile } from "@/lib/privacy";
+import { ageText, agoText, categoryText, statusText, useI18n } from "@/lib/i18n";
 
 type Verdict = Verification["verdict"];
 
@@ -55,6 +56,7 @@ function Stars({ value, onChange }: { value: number; onChange?: (n: number) => v
 export default function ReportDetail() {
   const { id } = useParams<{ id: string }>();
   const { user } = useUser();
+  const { t } = useI18n();
   const [report, setReport] = useState<Report | null>(null);
   const [mine, setMine] = useState<Verification | null>(null);
   const [loadError, setLoadError] = useState("");
@@ -70,7 +72,7 @@ export default function ReportDetail() {
       const r = (await tablesDB.getRow({ databaseId: config.databaseId, tableId: config.reportsTableId, rowId: id })) as unknown as Report;
       setReport(r);
     } catch {
-      setLoadError("This report doesn't exist or was deleted.");
+      setLoadError(t("detail.notFound"));
     }
   }, [id]);
 
@@ -110,12 +112,12 @@ export default function ReportDetail() {
       const here: [number, number] = [pos.coords.longitude, pos.coords.latitude];
       const dist = distanceMetres(here, report.location);
       if (dist > VERIFY_RADIUS_M) {
-        throw new Error(`You need to be at the spot to confirm this. You're about ${Math.round(dist)} m away (must be within ${VERIFY_RADIUS_M} m).`);
+        throw new Error(t("verify.tooFar", { d: Math.round(dist), m: VERIFY_RADIUS_M }));
       }
 
       let photo_id: string | null = null;
       if (verdict === "fixed") {
-        if (!photo) throw new Error("Take an after photo to show it's fixed.");
+        if (!photo) throw new Error(t("verify.needPhoto"));
         const file = await storage.createFile({
           bucketId: config.photosBucketId,
           fileId: ID.unique(),
@@ -144,7 +146,7 @@ export default function ReportDetail() {
             permissions: [Permission.read(Role.any()), Permission.update(Role.user(user.$id)), Permission.delete(Role.user(user.$id))],
           });
       setMine(saved as unknown as Verification);
-      setMessage(verdict === "fixed" ? "Thanks! Your confirmation is counted." : "Thanks! Marked as still broken.");
+      setMessage(verdict === "fixed" ? t("verify.thanksFixed") : t("verify.thanksBroken"));
       // The server function updates the report a moment later
       setTimeout(load, 2500);
     } catch (e) {
@@ -155,50 +157,50 @@ export default function ReportDetail() {
     }
   }
 
-  if (loadError) return (<><Header /><p className="error">{loadError}</p><Link href="/" className="btn ghost">← All issues</Link></>);
-  if (!report) return (<><Header /><p className="meta">Loading…</p></>);
+  if (loadError) return (<><Header /><p className="error">{loadError}</p><Link href="/" className="btn ghost">{t("common.allIssues")}</Link></>);
+  if (!report) return (<><Header /><p className="meta">{t("common.loading")}</p></>);
 
   const [lng, lat] = report.location;
-  const label = categoryLabel(report.category);
+  const label = categoryText(t, report.category);
   const fixedVotes = report.fixed_votes ?? 0;
   const brokenVotes = report.broken_votes ?? 0;
 
   return (
     <>
       <Header />
-      <Link href="/" className="meta back">← All issues</Link>
+      <Link href="/" className="meta back">{t("common.allIssues")}</Link>
 
       <article className="card" style={{ marginTop: 10 }}>
         <div className={report.fixed_photo_id ? "before-after" : ""}>
           <figure>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={photoUrl(report.photo_id)} alt={`${label}, as reported`} />
-            {report.fixed_photo_id && <figcaption>Before</figcaption>}
+            {report.fixed_photo_id && <figcaption>{t("detail.before")}</figcaption>}
           </figure>
           {report.fixed_photo_id && (
             <figure>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={photoUrl(report.fixed_photo_id)} alt={`${label}, after the fix`} />
-              <figcaption>After</figcaption>
+              <figcaption>{t("detail.after")}</figcaption>
             </figure>
           )}
         </div>
         <div className="body">
           <div className="row">
             <h1 style={{ fontSize: "1.3rem", margin: 0 }}>{label}</h1>
-            <span className={`pill ${report.status}`}>{report.status}</span>
+            <span className={`pill ${report.status}`}>{statusText(t, report.status)}</span>
           </div>
-          <p className={`age ${report.status}`}>{ageLabel(report)}</p>
+          <p className={`age ${report.status}`}>{ageText(t, report)}</p>
           {report.note && <p style={{ margin: "6px 0" }}>{report.note}</p>}
           <div className="row meta">
             <a href={`https://www.openstreetmap.org/?mlat=${lat}&mlon=${lng}#map=18/${lat}/${lng}`} target="_blank" rel="noreferrer">
               📍 {lat.toFixed(5)}, {lng.toFixed(5)}
             </a>
-            <span>Reported {timeAgo(report.captured_at)}</span>
+            <span>{t("detail.reported", { when: agoText(t, report.captured_at) })}</span>
           </div>
           <div className="row meta" style={{ marginTop: 6 }}>
-            <span>✅ {fixedVotes} fixed · ❌ {brokenVotes} still broken</span>
-            {report.reporter_rating ? <span>Fix rated <Stars value={report.reporter_rating} /></span> : null}
+            <span>{t("detail.votes", { fixed: fixedVotes, broken: brokenVotes })}</span>
+            {report.reporter_rating ? <span>{t("detail.rated")} <Stars value={report.reporter_rating} /></span> : null}
           </div>
           {myUpvote !== undefined && (
             <UpvoteButton reportId={report.$id} count={report.upvote_count} userId={user?.$id ?? null} reporterId={report.reporter_id} myUpvoteId={myUpvote} />
@@ -207,31 +209,31 @@ export default function ReportDetail() {
       </article>
 
       {report.hidden && (
-        <p className="notice">🚩 This report was flagged by several people and is hidden from the public feed until it&apos;s reviewed.</p>
+        <p className="notice">{t("detail.hidden")}</p>
       )}
 
       {!report.hidden && report.status !== "fixed" && <MakeItCount report={report} userId={user?.$id ?? null} />}
 
       {!report.hidden && <section className="card verify">
         <div className="body">
-          <h2>Is it fixed?</h2>
+          <h2>{t("verify.title")}</h2>
           <p className="hint" style={{ marginTop: 0 }}>
-            You need to be at the spot (within {VERIFY_RADIUS_M} m). {report.status === "fixed"
-              ? "If it's broken again, say so and it will reopen."
+            {t("verify.mustBeThere", { m: VERIFY_RADIUS_M })} {report.status === "fixed"
+              ? t("verify.reopenHint")
               : isReporter
-                ? "As the reporter, your confirmation closes it."
-                : "It closes when the reporter or 3 people confirm with an after photo."}
+                ? t("verify.reporterHint")
+                : t("verify.quorumHint")}
           </p>
 
           {!user ? (
-            <Link href="/login" className="btn block">Log in to confirm</Link>
+            <Link href="/login" className="btn block">{t("verify.login")}</Link>
           ) : (
             <>
-              {mine && <p className="meta">You said: <strong>{mine.verdict === "fixed" ? "✅ Fixed" : "❌ Still broken"}</strong>. You can change it.</p>}
+              {mine && <p className="meta">{t("verify.youSaid")} <strong>{mine.verdict === "fixed" ? t("verify.fixedShort") : t("verify.broken")}</strong>. {t("verify.canChange")}</p>}
 
               {isReporter && (
                 <div style={{ margin: "10px 0" }}>
-                  <span className="meta">How well was it fixed? (optional) </span>
+                  <span className="meta">{t("verify.rateQuestion")} </span>
                   <Stars value={rating} onChange={setRating} />
                 </div>
               )}
@@ -240,13 +242,13 @@ export default function ReportDetail() {
                 onChange={(e) => { const f = e.target.files?.[0]; if (f) submit("fixed", f); }} />
               <div className="verify-actions">
                 <button className="btn" disabled={!!busy} onClick={() => fileRef.current?.click()}>
-                  {busy === "fixed" ? "Saving…" : "📷 It's fixed"}
+                  {busy === "fixed" ? t("common.saving") : t("verify.fixed")}
                 </button>
                 <button className="btn ghost" disabled={!!busy} onClick={() => submit("still_broken")}>
-                  {busy === "still_broken" ? "Saving…" : "❌ Still broken"}
+                  {busy === "still_broken" ? t("common.saving") : t("verify.broken")}
                 </button>
               </div>
-              <p className="hint">&quot;It&apos;s fixed&quot; opens your camera for an after photo.</p>
+              <p className="hint">{t("verify.cameraHint")}</p>
             </>
           )}
           {message && <p className="ok">{message}</p>}

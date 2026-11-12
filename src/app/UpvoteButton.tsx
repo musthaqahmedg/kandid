@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ID, Permission, Query, Role } from "appwrite";
 import { config, tablesDB } from "@/lib/appwrite";
+import { useI18n } from "@/lib/i18n";
 
 type Props = {
   reportId: string;
@@ -18,6 +19,7 @@ type Props = {
 /** "I saw this too" toggle. The real count is recomputed by the kandid-sync function. */
 export default function UpvoteButton({ reportId, count, userId, reporterId, myUpvoteId, onChange }: Props) {
   const router = useRouter();
+  const { t } = useI18n();
   const [mine, setMine] = useState<string | null>(myUpvoteId);
   const [shown, setShown] = useState(count);
   const [busy, setBusy] = useState(false);
@@ -63,9 +65,9 @@ export default function UpvoteButton({ reportId, count, userId, reporterId, myUp
       onClick={toggle}
       disabled={busy || isOwn}
       aria-pressed={!!mine}
-      title={isOwn ? "You reported this" : mine ? "Tap to undo" : "I saw this too"}
+      title={isOwn ? t("upvote.own") : mine ? t("upvote.undo") : t("upvote.add")}
     >
-      👍 {mine ? "You saw this" : "I saw this too"} · {shown}
+      👍 {mine ? t("upvote.mine") : t("upvote.add")} · {shown}
     </button>
   );
 }

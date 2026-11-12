@@ -6,9 +6,11 @@ import { ExecutionMethod } from "appwrite";
 import Header from "../Header";
 import { account, config, functions } from "@/lib/appwrite";
 import { useUser } from "@/lib/useUser";
+import { useI18n } from "@/lib/i18n";
 
 export default function AccountPage() {
   const { user, loading } = useUser();
+  const { t } = useI18n();
   const [confirm, setConfirm] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
@@ -24,7 +26,7 @@ export default function AccountPage() {
         async: false,
       });
       const body = JSON.parse(exec.responseBody || "{}");
-      if (!body.ok) throw new Error(body.reason || "Something went wrong. Please try again.");
+      if (!body.ok) throw new Error(t("common.tryAgain"));
       await account.deleteSession({ sessionId: "current" }).catch(() => {});
       setDone(true);
     } catch (e) {
@@ -37,39 +39,39 @@ export default function AccountPage() {
   return (
     <>
       <Header />
-      <h1>My data</h1>
+      <h1>{t("account.title")}</h1>
       {loading ? (
-        <p className="meta">Loading…</p>
+        <p className="meta">{t("common.loading")}</p>
       ) : done ? (
-        <p className="ok">Your account and all your data have been deleted.</p>
+        <p className="ok">{t("account.deleted")}</p>
       ) : !user ? (
         <>
-          <p>Log in to see and delete your data.</p>
-          <Link href="/login" className="btn">Log in</Link>
+          <p>{t("account.loginFirst")}</p>
+          <Link href="/login" className="btn">{t("nav.login")}</Link>
         </>
       ) : (
         <>
-          <p>Logged in as <strong>{user.email}</strong>. Your email is never shown publicly.</p>
-          <p className="meta">To delete a single report, open it and tap &quot;Delete my report&quot;.</p>
+          <p>{t("account.loggedInAs")} <strong>{user.email}</strong>. {t("account.emailPrivate")}</p>
+          <p className="meta">{t("account.singleReport")}</p>
 
           <section className="card verify">
             <div className="body">
-              <h2>Delete my account</h2>
+              <h2>{t("account.deleteTitle")}</h2>
               <p className="hint" style={{ marginTop: 0 }}>
-                This permanently deletes your account, all your reports and photos, and your votes, ratings, filings and flags. It can&apos;t be undone.
+                {t("account.deleteHint")}
               </p>
               {confirm ? (
                 <div className="verify-actions">
-                  <button className="btn danger" disabled={busy} onClick={deleteEverything}>{busy ? "Deleting…" : "Yes, delete everything"}</button>
-                  <button className="btn ghost" disabled={busy} onClick={() => setConfirm(false)}>Cancel</button>
+                  <button className="btn danger" disabled={busy} onClick={deleteEverything}>{busy ? t("mod.deleting") : t("account.yesDelete")}</button>
+                  <button className="btn ghost" disabled={busy} onClick={() => setConfirm(false)}>{t("common.cancel")}</button>
                 </div>
               ) : (
-                <button className="btn ghost block" onClick={() => setConfirm(true)}>Delete my account and data</button>
+                <button className="btn ghost block" onClick={() => setConfirm(true)}>{t("account.deleteButton")}</button>
               )}
               {error && <p className="error">{error}</p>}
             </div>
           </section>
-          <p className="meta" style={{ marginTop: 16 }}>See our <Link href="/privacy">privacy policy</Link>.</p>
+          <p className="meta" style={{ marginTop: 16 }}><Link href="/privacy">{t("account.seePolicy")}</Link></p>
         </>
       )}
     </>

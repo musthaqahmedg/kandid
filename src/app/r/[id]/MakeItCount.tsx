@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { ID, Permission, Query, Role } from "appwrite";
 import { ageLabel, categoryLabel, config, photoUrl, tablesDB, type Report } from "@/lib/appwrite";
+import { ageText, categoryText, useI18n, type Key } from "@/lib/i18n";
 
 type Channel = "pwd4u" | "ksmart" | "cmo";
 type Filing = { $id: string; $createdAt: string; channel: Channel | "other"; reference?: string | null; user_id: string };
@@ -38,6 +39,7 @@ function channelsFor(category: Report["category"]): Channel[] {
 }
 
 export default function MakeItCount({ report, userId }: { report: Report; userId: string | null }) {
+  const { t } = useI18n();
   const [filings, setFilings] = useState<Filing[]>([]);
   const [copied, setCopied] = useState("");
   const [open, setOpen] = useState<Channel | null>(null);
@@ -51,7 +53,7 @@ export default function MakeItCount({ report, userId }: { report: Report; userId
   const label = categoryLabel(report.category);
   const date = new Date(report.captured_at).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
 
-  const shareText = `🚧 ${label}: ${ageLabel(report).toLowerCase()}. ${report.upvote_count} people saw it too. Please fix it! #Kandid`;
+  const shareText = t("share.text", { label: categoryText(t, report.category), age: ageText(t, report), n: report.upvote_count });
   const complaintText = [
     `Complaint: ${label}`,
     `Location: ${lat.toFixed(6)}, ${lng.toFixed(6)} (map: ${mapUrl})`,
@@ -98,7 +100,7 @@ export default function MakeItCount({ report, userId }: { report: Report; userId
       setFilings((f) => [row as unknown as Filing, ...f]);
       setOpen(null); setRef("");
     } catch {
-      setError("You've already marked this one as filed.");
+      setError(t("share.alreadyFiled"));
     } finally {
       setBusy(false);
     }
@@ -109,20 +111,20 @@ export default function MakeItCount({ report, userId }: { report: Report; userId
   return (
     <section className="card verify">
       <div className="body">
-        <h2>Make it count</h2>
+        <h2>{t("share.title")}</h2>
 
-        <p className="meta" style={{ margin: "0 0 8px" }}>1. Share it so more people see it</p>
+        <p className="meta" style={{ margin: "0 0 8px" }}>{t("share.step1")}</p>
         <div className="share-row">
-          {canShare && <button className="btn" onClick={nativeShare}>📤 Share</button>}
+          {canShare && <button className="btn" onClick={nativeShare}>{t("share.share")}</button>}
           <a className="btn ghost" href={`https://wa.me/?text=${encodeURIComponent(`${shareText}\n${pageUrl}`)}`} target="_blank" rel="noreferrer">WhatsApp</a>
           <a className="btn ghost" href={`https://x.com/intent/post?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(pageUrl)}`} target="_blank" rel="noreferrer">X</a>
-          <button className="btn ghost" onClick={() => copy(pageUrl, "link")}>{copied === "link" ? "Copied ✓" : "Copy link"}</button>
+          <button className="btn ghost" onClick={() => copy(pageUrl, "link")}>{copied === "link" ? t("share.copied") : t("share.copyLink")}</button>
         </div>
-        <p className="hint">Tip: tag your ward councillor or MLA when you post.</p>
+        <p className="hint">{t("share.tip")}</p>
 
-        <p className="meta" style={{ margin: "16px 0 8px" }}>2. File it officially</p>
+        <p className="meta" style={{ margin: "16px 0 8px" }}>{t("share.step2")}</p>
         <button className="btn ghost block" onClick={() => copy(complaintText, "complaint")}>
-          {copied === "complaint" ? "Complaint text copied ✓" : "📋 Copy ready-made complaint text"}
+          {copied === "complaint" ? t("share.complaintCopied") : t("share.copyComplaint")}
         </button>
 
         <ul className="channels">
@@ -134,19 +136,19 @@ export default function MakeItCount({ report, userId }: { report: Report; userId
                 <div className="row">
                   <div>
                     <strong>{ch.name}</strong>
-                    <div className="meta">{ch.who}</div>
+                    <div className="meta">{t(`ch.${c}.who` as Key)}</div>
                   </div>
-                  <a className="btn ghost" href={ch.url()} target="_blank" rel="noreferrer">Open ↗</a>
+                  <a className="btn ghost" href={ch.url()} target="_blank" rel="noreferrer">{t("share.open")}</a>
                 </div>
-                <p className="hint" style={{ margin: "6px 0" }}>{ch.how}</p>
-                {count > 0 && <p className="ok" style={{ margin: "4px 0" }}>✓ Filed {count} time{count > 1 ? "s" : ""}</p>}
+                <p className="hint" style={{ margin: "6px 0" }}>{t(`ch.${c}.how` as Key)}</p>
+                {count > 0 && <p className="ok" style={{ margin: "4px 0" }}>{t("share.filedTimes", { n: count })}</p>}
                 {userId && (open === c ? (
                   <div className="filed-form">
-                    <input type="text" maxLength={100} placeholder="Complaint / reference number (optional)" value={ref} onChange={(e) => setRef(e.target.value)} />
-                    <button className="btn" disabled={busy} onClick={() => markFiled(c)}>{busy ? "Saving…" : "Save"}</button>
+                    <input type="text" maxLength={100} placeholder={t("share.refPlaceholder")} value={ref} onChange={(e) => setRef(e.target.value)} />
+                    <button className="btn" disabled={busy} onClick={() => markFiled(c)}>{busy ? t("common.saving") : t("share.save")}</button>
                   </div>
                 ) : (
-                  <button className="linklike" onClick={() => { setOpen(c); setError(""); }}>I filed it here</button>
+                  <button className="linklike" onClick={() => { setOpen(c); setError(""); }}>{t("share.iFiled")}</button>
                 ))}
               </li>
             );
@@ -156,11 +158,11 @@ export default function MakeItCount({ report, userId }: { report: Report; userId
 
         {filings.length > 0 && (
           <div className="filings">
-            <p className="meta" style={{ margin: "12px 0 4px" }}>Official filings</p>
+            <p className="meta" style={{ margin: "12px 0 4px" }}>{t("share.filings")}</p>
             {filings.map((f) => (
               <div key={f.$id} className="meta">
                 📨 {f.channel === "other" ? "Other" : CHANNELS[f.channel].name} · {new Date(f.$createdAt).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}
-                {f.reference ? ` · Ref ${f.reference}` : ""}
+                {f.reference ? ` · ${t("share.ref")} ${f.reference}` : ""}
               </div>
             ))}
           </div>
