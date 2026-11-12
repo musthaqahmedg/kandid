@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { ID, Permission, Query, Role } from "appwrite";
 import { ageLabel, categoryLabel, config, photoUrl, tablesDB, type Report } from "@/lib/appwrite";
 import { ageText, categoryText, useI18n, type Key } from "@/lib/i18n";
+import MLA from "@/data/mla-2026.json";
 
 type Channel = "pwd4u" | "ksmart" | "cmo";
 type Filing = { $id: string; $createdAt: string; channel: Channel | "other"; reference?: string | null; user_id: string };
@@ -58,6 +59,7 @@ export default function MakeItCount({ report, userId }: { report: Report; userId
     `Complaint: ${label}`,
     report.address ? `Place: ${report.address}` : null,
     report.constituency ? `Assembly constituency: ${report.constituency}${report.ac_no ? ` (No. ${report.ac_no})` : ""}` : null,
+    report.ac_no && (MLA.mla as Record<string, { name: string }>)[String(report.ac_no)] ? `MLA: ${(MLA.mla as Record<string, { name: string }>)[String(report.ac_no)].name}` : null,
     `Location: ${lat.toFixed(6)}, ${lng.toFixed(6)} (map: ${mapUrl})`,
     `Photo taken on the spot on ${date}.`,
     report.note ? `Details: ${report.note}` : null,

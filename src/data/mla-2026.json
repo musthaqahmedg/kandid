@@ -1,0 +1,450 @@
+{
+"source": "Election Commission of India, results.eci.gov.in (General Election to Kerala Legislative Assembly, May 2026; provisional)",
+"updated": "2026-11-12",
+"mla": {
+"1": {
+"name": "A K M Ashraf",
+"party": "Indian Union Muslim League"
+},
+"2": {
+"name": "Kallatra Mahin",
+"party": "Indian Union Muslim League"
+},
+"3": {
+"name": "Neelakandan",
+"party": "Indian National Congress"
+},
+"4": {
+"name": "Adv. Govindan Pallikappil",
+"party": "Communist Party of India"
+},
+"5": {
+"name": "Sandeep Varier",
+"party": "Indian National Congress"
+},
+"6": {
+"name": "V. Kunhikrishnan",
+"party": "Independent"
+},
+"7": {
+"name": "M. Vijin",
+"party": "Communist Party of India (Marxist)"
+},
+"8": {
+"name": "T K Govindan Master",
+"party": "Independent"
+},
+"9": {
+"name": "Adv. Sajeev Joseph",
+"party": "Indian National Congress"
+},
+"11": {
+"name": "Adv. T. O. Mohanan",
+"party": "Indian National Congress"
+},
+"12": {
+"name": "Pinarayi Vijayan",
+"party": "Communist Party of India (Marxist)"
+},
+"13": {
+"name": "Karayi Rajan",
+"party": "Communist Party of India (Marxist)"
+},
+"14": {
+"name": "P K Praveen",
+"party": "Rashtriya Janata Dal"
+},
+"15": {
+"name": "V K Sanoj",
+"party": "Communist Party of India (Marxist)"
+},
+"17": {
+"name": "Usha Vijayan",
+"party": "Indian National Congress"
+},
+"18": {
+"name": "I C Balakrishnan",
+"party": "Indian National Congress"
+},
+"19": {
+"name": "Adv. T Siddique",
+"party": "Indian National Congress"
+},
+"20": {
+"name": "K K Rema",
+"party": "Revolutionary Marxist Party of India"
+},
+"21": {
+"name": "Parakkal Abdulla",
+"party": "Indian Union Muslim League"
+},
+"23": {
+"name": "Adv. K. Praveen Kumar",
+"party": "Indian National Congress"
+},
+"26": {
+"name": "Adv. Vidya Balakrishnan",
+"party": "Indian National Congress"
+},
+"27": {
+"name": "Adv. K Jayanth",
+"party": "Indian National Congress"
+},
+"28": {
+"name": "Adv. Fyzal Babu",
+"party": "Indian Union Muslim League"
+},
+"30": {
+"name": "M. A. Razak Master",
+"party": "Indian Union Muslim League"
+},
+"31": {
+"name": "P K Firos",
+"party": "Indian Union Muslim League"
+},
+"32": {
+"name": "C K Kasim",
+"party": "Indian Union Muslim League"
+},
+"33": {
+"name": "T. P. Ashrafali",
+"party": "Indian Union Muslim League"
+},
+"34": {
+"name": "P. K. Basheer",
+"party": "Indian Union Muslim League"
+},
+"36": {
+"name": "A. P. Anilkumar",
+"party": "Indian National Congress"
+},
+"37": {
+"name": "Adv. M. Rahmathulla",
+"party": "Indian Union Muslim League"
+},
+"38": {
+"name": "Najeeb Kanthapuram",
+"party": "Indian Union Muslim League"
+},
+"39": {
+"name": "Manjalamkuzhi Ali",
+"party": "Indian Union Muslim League"
+},
+"40": {
+"name": "P. K Kunhalikutty",
+"party": "Indian Union Muslim League"
+},
+"41": {
+"name": "K. M. Shaji",
+"party": "Indian Union Muslim League"
+},
+"42": {
+"name": "T V Ibrahim",
+"party": "Indian Union Muslim League"
+},
+"43": {
+"name": "P M A Sameer",
+"party": "Indian Union Muslim League"
+},
+"44": {
+"name": "P K Navas",
+"party": "Indian Union Muslim League"
+},
+"45": {
+"name": "Kurukkoli Moideen",
+"party": "Indian Union Muslim League"
+},
+"46": {
+"name": "Prof. Abid Hussain Thangal",
+"party": "Indian Union Muslim League"
+},
+"47": {
+"name": "Adv. V S Joy",
+"party": "Indian National Congress"
+},
+"48": {
+"name": "K. P Noushad Ali",
+"party": "Indian National Congress"
+},
+"49": {
+"name": "V T Balram",
+"party": "Indian National Congress"
+},
+"50": {
+"name": "Muhammed Muhassin",
+"party": "Communist Party of India"
+},
+"51": {
+"name": "P. Mammikutty",
+"party": "Communist Party of India (Marxist)"
+},
+"53": {
+"name": "Thulasi Teacher",
+"party": "Indian National Congress"
+},
+"54": {
+"name": "Adv. N. Samsudheen",
+"party": "Indian Union Muslim League"
+},
+"55": {
+"name": "A Prabhakaran",
+"party": "Communist Party of India (Marxist)"
+},
+"57": {
+"name": "Sumod",
+"party": "Communist Party of India (Marxist)"
+},
+"58": {
+"name": "Adv. Sumesh Achuthan",
+"party": "Indian National Congress"
+},
+"62": {
+"name": "A C Moideen",
+"party": "Communist Party of India (Marxist)"
+},
+"63": {
+"name": "N. K. Akbar",
+"party": "Communist Party of India (Marxist)"
+},
+"64": {
+"name": "Prof. C Ravindranath",
+"party": "Communist Party of India (Marxist)"
+},
+"65": {
+"name": "Xavier Chittilappilly",
+"party": "Communist Party of India (Marxist)"
+},
+"66": {
+"name": "K Rajan",
+"party": "Communist Party of India"
+},
+"67": {
+"name": "Rajan J. Pallan",
+"party": "Indian National Congress"
+},
+"68": {
+"name": "Geethagopi",
+"party": "Communist Party of India"
+},
+"69": {
+"name": "K. K. Valsaraj",
+"party": "Communist Party of India"
+},
+"70": {
+"name": "Adv. Thomas Unniyadan",
+"party": "Kerala Congress"
+},
+"71": {
+"name": "K K Ramachandran",
+"party": "Communist Party of India (Marxist)"
+},
+"73": {
+"name": "Adv. O J Janeesh",
+"party": "Indian National Congress"
+},
+"74": {
+"name": "Manoj Moothedan",
+"party": "Indian National Congress"
+},
+"77": {
+"name": "Adv. V E Abdul Gafoor",
+"party": "Indian Union Muslim League"
+},
+"79": {
+"name": "Tony Chammany",
+"party": "Indian National Congress"
+},
+"80": {
+"name": "Mohammed Shiyas",
+"party": "Indian National Congress"
+},
+"81": {
+"name": "Deepak Joy",
+"party": "Indian National Congress"
+},
+"82": {
+"name": "T. J Vinod",
+"party": "Indian National Congress"
+},
+"83": {
+"name": "Uma Thomas",
+"party": "Indian National Congress"
+},
+"84": {
+"name": "V. P. Sajeendran",
+"party": "Indian National Congress"
+},
+"85": {
+"name": "Anoop Jacob",
+"party": "Kerala Congress (Jacob)"
+},
+"87": {
+"name": "Shibu Theckumpuram",
+"party": "Kerala Congress"
+},
+"88": {
+"name": "F. Raja",
+"party": "Indian National Congress"
+},
+"89": {
+"name": "Adv. Senapathy Venu",
+"party": "Indian National Congress"
+},
+"90": {
+"name": "Apu John Joseph",
+"party": "Kerala Congress"
+},
+"91": {
+"name": "Roy K Paulose",
+"party": "Indian National Congress"
+},
+"93": {
+"name": "Mani C Kappen",
+"party": "Independent"
+},
+"94": {
+"name": "Adv. Mons Joseph",
+"party": "Kerala Congress"
+},
+"95": {
+"name": "K Binimon",
+"party": "Indian National Congress"
+},
+"96": {
+"name": "Nattakom Suresh",
+"party": "Indian National Congress"
+},
+"97": {
+"name": "Thiruvanchoor Radhakrishnan",
+"party": "Indian National Congress"
+},
+"98": {
+"name": "Adv. Chandy Oommen",
+"party": "Indian National Congress"
+},
+"99": {
+"name": "Vinu Job Kuzhimannil",
+"party": "Kerala Congress"
+},
+"100": {
+"name": "Rony K Baby",
+"party": "Indian National Congress"
+},
+"101": {
+"name": "Adv. Sebastian M. J",
+"party": "Indian National Congress"
+},
+"103": {
+"name": "P. Prasad",
+"party": "Communist Party of India"
+},
+"105": {
+"name": "G. Sudhakaran",
+"party": "Independent"
+},
+"106": {
+"name": "Reji Cheriyan",
+"party": "Kerala Congress"
+},
+"107": {
+"name": "Ramesh Chennithala",
+"party": "Indian National Congress"
+},
+"108": {
+"name": "Adv. M. Liju",
+"party": "Indian National Congress"
+},
+"109": {
+"name": "M. S. Arun Kumar",
+"party": "Communist Party of India (Marxist)"
+},
+"111": {
+"name": "Adv. Varghese Mammen",
+"party": "Kerala Congress"
+},
+"112": {
+"name": "Adv. Pazhakulam Madhu",
+"party": "Indian National Congress"
+},
+"114": {
+"name": "Adv. K U Jenish Kumar",
+"party": "Communist Party of India (Marxist)"
+},
+"116": {
+"name": "C. R. Mahesh",
+"party": "Indian National Congress"
+},
+"117": {
+"name": "Shibu Baby John",
+"party": "Revolutionary Socialist Party"
+},
+"118": {
+"name": "Ullas Kovur",
+"party": "Revolutionary Socialist Party"
+},
+"119": {
+"name": "K. N. Balagopal",
+"party": "Communist Party of India (Marxist)"
+},
+"121": {
+"name": "C. Ajayaprasad",
+"party": "Communist Party of India"
+},
+"123": {
+"name": "P. C. Vishnunadh",
+"party": "Indian National Congress"
+},
+"124": {
+"name": "Adv. Bindhu Krishna",
+"party": "Indian National Congress"
+},
+"125": {
+"name": "Adv. Vishnu Mohan",
+"party": "Revolutionary Socialist Party"
+},
+"126": {
+"name": "B. B. Gopakumar",
+"party": "Bharatiya Janata Party"
+},
+"127": {
+"name": "Adv. V Joy",
+"party": "Communist Party of India (Marxist)"
+},
+"129": {
+"name": "Ramya Haridas",
+"party": "Indian National Congress"
+},
+"130": {
+"name": "G R Anil",
+"party": "Communist Party of India"
+},
+"131": {
+"name": "Muhammed Sudheersha S",
+"party": "Indian National Congress"
+},
+"132": {
+"name": "V. Muraleedharan",
+"party": "Bharatiya Janata Party"
+},
+"133": {
+"name": "K. Muraleedharan",
+"party": "Indian National Congress"
+},
+"134": {
+"name": "C P John",
+"party": "Communist Marxist Party Kerala State Committee"
+},
+"135": {
+"name": "Rajeev Chandrasekhar",
+"party": "Bharatiya Janata Party"
+},
+"138": {
+"name": "M. R. Baiju",
+"party": "Indian National Congress"
+},
+"139": {
+"name": "Adv. M. Vincent",
+"party": "Indian National Congress"
+}
+}
+}

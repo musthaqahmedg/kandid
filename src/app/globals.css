@@ -119,3 +119,4 @@ textarea { min-height: 90px; resize: vertical; }
 .place { color: var(--text); font-weight: 600; }
 .who { margin-top: 10px; padding: 10px 12px; border-radius: 12px; background: color-mix(in srgb, var(--brand) 6%, var(--card)); border: 1px solid var(--line); }
 .who a { display: inline-block; margin-top: 4px; color: var(--brand); }
+.tiny { font-size: 0.75rem; }

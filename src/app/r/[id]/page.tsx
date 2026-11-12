@@ -7,6 +7,9 @@ import { ID, Permission, Query, Role } from "appwrite";
 import Header from "../../Header";
 import UpvoteButton from "../../UpvoteButton";
 import MakeItCount from "./MakeItCount";
+import MLA from "@/data/mla-2026.json";
+
+const MLAS = MLA.mla as Record<string, { name: string; party: string }>;
 import Moderation from "./Moderation";
 import {
   VERIFY_RADIUS_M,
@@ -205,8 +208,14 @@ export default function ReportDetail() {
           {report.constituency && (
             <div className="who">
               <div>🏛 {t("ac.label", { ac: report.constituency, no: report.ac_no ?? "" })}</div>
+              {report.ac_no && MLAS[String(report.ac_no)] && (
+                <div><strong>{t("ac.mla", { name: MLAS[String(report.ac_no)].name })}</strong> <span className="meta">({MLAS[String(report.ac_no)].party})</span></div>
+              )}
               {report.lok_sabha && <div className="meta">{t("ac.lokSabha", { pc: report.lok_sabha })}</div>}
-              <a className="meta" href="https://www.niyamasabha.org/" target="_blank" rel="noreferrer">{t("ac.findMla")}</a>
+              {!(report.ac_no && MLAS[String(report.ac_no)]) && (
+                <a className="meta" href="https://www.niyamasabha.org/" target="_blank" rel="noreferrer">{t("ac.findMla")}</a>
+              )}
+              {report.ac_no && MLAS[String(report.ac_no)] && <div className="meta tiny">{t("ac.source")}</div>}
             </div>
           )}
           {myUpvote !== undefined && (

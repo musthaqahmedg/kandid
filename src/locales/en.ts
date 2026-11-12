@@ -81,6 +81,8 @@ const en = {
 
   "ac.label": "{ac} assembly constituency (No. {no})",
   "ac.lokSabha": "Lok Sabha: {pc}",
+  "ac.mla": "MLA: {name}",
+  "ac.source": "Source: Election Commission of India, 2026 results",
   "ac.findMla": "Find your MLA on the Kerala Assembly website ↗",
   "detail.notFound": "This report doesn't exist or was deleted.",
   "detail.before": "Before",
