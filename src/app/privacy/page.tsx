@@ -29,6 +29,8 @@ export default function Privacy() {
       <h2>Why we use it</h2>
       <p>Only to run Kandid: show issues, count confirmations, close fixed issues, prevent abuse, and keep the service secure. We don&apos;t sell your data or use it for advertising.</p>
 
+      <p className="meta">Constituency boundaries: DataMeet India community, CC BY 2.5 India (approximate).</p>
+
       <h2>Where it is stored</h2>
       <ul>
         <li>Accounts, reports and photos: Appwrite Cloud (Singapore region).</li>

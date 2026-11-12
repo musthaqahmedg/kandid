@@ -79,6 +79,9 @@ const en = {
   "report.tooBig": "Photo is over 5 MB. Try again.",
   "report.unreadable": "Couldn't read that photo. Try again.",
 
+  "ac.label": "{ac} assembly constituency (No. {no})",
+  "ac.lokSabha": "Lok Sabha: {pc}",
+  "ac.findMla": "Find your MLA on the Kerala Assembly website ↗",
   "detail.notFound": "This report doesn't exist or was deleted.",
   "detail.before": "Before",
   "detail.after": "After",

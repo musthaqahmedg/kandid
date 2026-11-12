@@ -202,6 +202,13 @@ export default function ReportDetail() {
             <span>{t("detail.votes", { fixed: fixedVotes, broken: brokenVotes })}</span>
             {report.reporter_rating ? <span>{t("detail.rated")} <Stars value={report.reporter_rating} /></span> : null}
           </div>
+          {report.constituency && (
+            <div className="who">
+              <div>🏛 {t("ac.label", { ac: report.constituency, no: report.ac_no ?? "" })}</div>
+              {report.lok_sabha && <div className="meta">{t("ac.lokSabha", { pc: report.lok_sabha })}</div>}
+              <a className="meta" href="https://www.niyamasabha.org/" target="_blank" rel="noreferrer">{t("ac.findMla")}</a>
+            </div>
+          )}
           {myUpvote !== undefined && (
             <UpvoteButton reportId={report.$id} count={report.upvote_count} userId={user?.$id ?? null} reporterId={report.reporter_id} myUpvoteId={myUpvote} />
           )}

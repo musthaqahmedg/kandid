@@ -52,6 +52,9 @@ export type Report = {
   reporter_rating?: number | null;
   flag_count?: number;
   hidden?: boolean;
+  ac_no?: number | null;
+  constituency?: string | null;
+  lok_sabha?: string | null;
 };
 
 export type Verification = {

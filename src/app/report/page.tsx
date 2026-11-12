@@ -11,6 +11,7 @@ import { canvasToFile, detectPrivateAreas, preloadPrivacyModels, renderBlurred, 
 import { useUser } from "@/lib/useUser";
 import { categoryText, useI18n } from "@/lib/i18n";
 import { placeName } from "@/lib/geocode";
+import { findConstituency, type Constituency } from "@/lib/constituency";
 
 type Coords = { lat: number; lng: number; accuracy: number };
 type Pin = { lat: number; lng: number };
@@ -38,6 +39,7 @@ export default function ReportPage() {
   const [pinMoved, setPinMoved] = useState(false);
   const [pinWarning, setPinWarning] = useState("");
   const [address, setAddress] = useState<string | null>(null);
+  const [ac, setAc] = useState<Constituency | null>(null);
   const [category, setCategory] = useState<Category>("road");
   const [note, setNote] = useState("");
   const [busy, setBusy] = useState(false);
@@ -63,6 +65,7 @@ export default function ReportPage() {
   useEffect(() => {
     if (!pin) return;
     setAddress(null);
+    findConstituency(pin.lat, pin.lng).then(setAc);
     const id = setTimeout(() => { placeName(pin.lat, pin.lng).then(setAddress); }, 1200);
     return () => clearTimeout(id);
   }, [pin]);
@@ -124,6 +127,9 @@ export default function ReportPage() {
           location: [pin.lng, pin.lat], // Appwrite points are [longitude, latitude]
           gps_accuracy: Math.round(coords.accuracy),
           address,
+          ac_no: ac?.ac_no ?? null,
+          constituency: ac?.ac ?? null,
+          lok_sabha: ac?.pc ?? null,
           pin_adjusted: pinMoved,
           reporter_id: user.$id,
           captured_at: capturedAt,
@@ -201,6 +207,7 @@ export default function ReportPage() {
               {coords.accuracy > 50 && " " + t("report.gpsRough", { n: Math.round(coords.accuracy) })}
             </p>
             {address && <p className="hint place">📍 {address}</p>}
+            {ac && <p className="hint">🏛 {t("ac.label", { ac: ac.ac, no: ac.ac_no })}</p>}
             {pinWarning && <p className="error">{pinWarning}</p>}
           </>
         )}

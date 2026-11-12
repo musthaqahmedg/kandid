@@ -57,6 +57,7 @@ export default function MakeItCount({ report, userId }: { report: Report; userId
   const complaintText = [
     `Complaint: ${label}`,
     report.address ? `Place: ${report.address}` : null,
+    report.constituency ? `Assembly constituency: ${report.constituency}${report.ac_no ? ` (No. ${report.ac_no})` : ""}` : null,
     `Location: ${lat.toFixed(6)}, ${lng.toFixed(6)} (map: ${mapUrl})`,
     `Photo taken on the spot on ${date}.`,
     report.note ? `Details: ${report.note}` : null,
